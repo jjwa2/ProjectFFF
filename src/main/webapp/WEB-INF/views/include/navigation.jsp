@@ -188,7 +188,7 @@
        		CONTECT US
         </a>
         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="MenuLink4">
-          <li><a class="dropdown-item" href="/qna/inquiry">문의게시판입니다.</a></li>
+          <li><a class="dropdown-item" href="/qna/inquiry">문의게시판입니다22.</a></li>
           <li><a class="dropdown-item" href="/qna">자주묻는질문</a></li>
         </ul>
       </div>
