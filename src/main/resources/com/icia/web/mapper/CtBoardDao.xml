@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper  namespace="com.icia.web.dao.CtBoardDao">
+
+<resultMap id="ctResultMap" type="com.icia.web.model.CtBoard">
+	<id column="CT_BBS_SEQ" property="ctBbsSeq" />
+	<result column="FD_BBS_SEQ" property="fdBbsSeq" />
+	<result column="USER_ID" property="userId" />
+	<result column="CT_BBS_TITLE" property="ctBbsTitle" />
+	<result column="CT_BBS_CONTENT" property="ctBbsContent" />
+	<result column="CT_REG_DATE" property="ctRegDate" />
+	<result column="CT_FILE_ORG_NAME" property="ctFileOrgName" />
+	<result column="CT_FILE_NAME" property="ctFileName" />
+	<result column="CT_FILE_EXT" property="ctFileExt" />
+	<result column="CT_FILE_SIZE" property="ctFileSize" />
+	<result column="CT_PAY_TYPE" property="ctPayType" />
+	<result column="CT_PRICE" property="ctPrice" />
+	<result column="CT_DATE" property="ctDate"/>
+	<result column="VENUE_PLACE" property="venuePlace"/>
+	<result column="VENUE_PLACE_ADD" property="venuePlaceAdd"/>
+	<result column="CT_AGE" property="ctAge"/>
+	<result column="CAPACITY" property="capacity"/>
+	<result column="USER_CATEGOLY" property="userCategory"/>
+	<result column="USER_INTRODUCE" property="userIntroduce"/>
+
+	<result column="FD_FILE_NAME" property="fdFileName"/>
+	<result column="FILE_PROFILE_NAME" property="fileProfileName"/>
+	
+	<result column="FD_STATUS3" property="fdStatus3"/>
+	
+</resultMap>	
+
+<!-- 배정현 공연예매 MAP -->
+<resultMap id="ctPmResultMap" type="com.icia.web.model.CtPm">
+	<id column="PAYMENT_NUM" property="paymentNum"/>
+	<result column="USER_ID" property="userId" />
+	<result column="CT_BBS_SEQ" property="ctBbsSeq" />
+	<result column="PM_DATE" property="pmDate" />
+	<result column="PM_STATUS" property="pmStatus" />
+</resultMap>
+
+<!-- 게시물 등록 -->
+<insert id="ctBoardInsert" parameterType="com.icia.web.model.CtBoard">
+<!-- 선행처리기 -->
+<selectKey resultType="Long" keyProperty="ctBbsSeq" order="BEFORE">
+	SELECT SEQ_CT_BBS_SEQ.NEXTVAL FROM DUAL
+</selectKey>
+	INSERT INTO TBL_CT_BOARD (
+			    CT_BBS_SEQ,
+			    FD_BBS_SEQ,
+			    USER_ID,
+			    CT_BBS_TITLE,
+			    CT_BBS_CONTENT,
+			    CT_REG_DATE,
+				CT_FILE_ORG_NAME,
+				CT_FILE_NAME,
+				CT_FILE_EXT,
+				CT_FILE_SIZE,
+				CT_PAY_TYPE,
+				CT_PRICE)
+    VALUES( 
+				#{ctBbsSeq},
+				#{fdBbsSeq},
+				#{userId},
+			    #{ctBbsTitle},
+			    #{ctBbsContent},
+			    SYSDATE,
+			    #{ctFileOrgName},
+			    #{ctFileName},
+			    #{ctFileExt},
+			    #{ctFileSize},
+			    #{ctPayType},
+			    #{ctPrice})
+</insert>
+
+<!-- 게시물 리스트 -->
+
+<select id="boardListCount" parameterType="com.icia.web.model.CtBoard" resultType="long">
+
+	SELECT COUNT(CT_BBS_SEQ) AS CNT
+	  FROM TBL_CT_BOARD
+</select>
+
+
+
+<select id="boardList" parameterType="com.icia.web.model.CtBoard" resultMap="ctResultMap">
+
+	SELECT FD_BBS_SEQ,
+	       FD_FILE_NAME,
+	       FD_STATUS3,
+	       CT_BBS_TITLE,
+	       USER_CATEGOLY
+	  FROM (SELECT ROWNUM AS RNUM,
+	               FD_BBS_SEQ,
+	               FD_STATUS3,
+	               FD_FILE_NAME,
+	               CT_BBS_TITLE,
+	               USER_CATEGOLY
+	          FROM (SELECT A.FD_BBS_SEQ,
+	          			   NVL(A.FD_STATUS3, '') AS FD_STATUS3,
+	                       NVL(A.FD_FILE_NAME, '') AS FD_FILE_NAME,
+	                       NVL(B.CT_BBS_TITLE, '') AS CT_BBS_TITLE,
+	                       NVL(C.USER_CATEGOLY, '') AS USER_CATEGOLY
+	                  FROM TBL_FD_BOARD A, TBL_CT_BOARD B, TBL_ARTIST C
+	                 WHERE A.USER_ID = B.USER_ID
+	                   AND B.USER_ID = C.USER_ID
+	                   
+<if test='userCategory != null'>	                   
+	<choose>
+		<when test="userCategory == '힙합'">	                   
+	                   AND C.USER_CATEGOLY LIKE '힙합'
+	    </when>       
+	    <when test="userCategory == '재즈'">	        
+	                   AND C.USER_CATEGOLY LIKE '재즈'
+	    </when>       
+		<when test="userCategory == '댄스'">
+	                   AND C.USER_CATEGOLY LIKE '댄스'
+		</when>	                   
+		<when test="userCategory == 'ETC'">
+	                   AND C.USER_CATEGOLY LIKE 'ETC'
+		</when>	                   
+	</choose>	                   
+</if>	                   
+	                 ORDER BY B.CT_BBS_SEQ DESC))
+	 WHERE RNUM <![CDATA[>=]]> #{startRow}
+	   AND RNUM <![CDATA[<=]]> #{endRow}
+
+</select>
+
+<!-- 게시물 조회 -->
+<select  id="boardSelect" parameterType="long" resultMap="ctResultMap">
+
+SELECT A.CT_BBS_SEQ,
+       A.USER_ID,
+       NVL(A.CT_BBS_TITLE, '') AS CT_BBS_TITLE,
+       NVL(A.CT_BBS_CONTENT, '') AS CT_BBS_CONTENT,
+       NVL(A.CT_FILE_NAME, '') AS CT_FILE_NAME,
+       NVL(A.CT_PAY_TYPE, '') AS CT_PAY_TYPE,
+       NVL(A.CT_PRICE, '') AS CT_PRICE,
+       NVL(TO_CHAR(A.CT_REG_DATE, 'YYYY.MM.DD HH24:MI:SS'), '') AS CT_REG_DATE,
+       NVL(B.FD_FILE_NAME, '') AS FD_FILE_NAME,
+       NVL(B.CT_DATE, '') AS CT_DATE,
+       NVL(B.VENUE_PLACE, '') AS VENUE_PLACE,
+       NVL(B.VENUE_PLACE_ADD, '') AS VENUE_PLACE_ADD,
+       NVL(B.CT_AGE, '') AS CT_AGE,
+       NVL(B.CAPACITY, '') AS CAPACITY,   
+       NVL(C.USER_CATEGOLY, '') AS USER_CATEGOLY,
+       NVL(C.USER_INTRODUCE, '') AS USER_INTRODUCE,
+       NVL(D.FILE_PROFILE_NAME, '') AS FILE_PROFILE_NAME
+  FROM TBL_CT_BOARD A, TBL_FD_BOARD B, TBL_ARTIST C, TBL_ARTIST_PROFILE D
+ WHERE A.USER_ID = B.USER_ID
+   AND B.USER_ID = C.USER_ID
+   AND C.USER_ID = D.USER_ID
+   AND A.FD_BBS_SEQ = #{value}
+	 	 
+</select>
+
+
+
+<select  id="boardSelectBbsSeq" parameterType="long" resultMap="ctResultMap">
+
+SELECT A.CT_BBS_SEQ,
+       A.USER_ID,
+       NVL(A.CT_BBS_TITLE, '') AS CT_BBS_TITLE,
+       NVL(A.CT_BBS_CONTENT, '') AS CT_BBS_CONTENT,
+       NVL(A.CT_FILE_NAME, '') AS CT_FILE_NAME,
+       NVL(A.CT_PAY_TYPE, '') AS CT_PAY_TYPE,
+       NVL(A.CT_PRICE, '') AS CT_PRICE,
+       NVL(TO_CHAR(A.CT_REG_DATE, 'YYYY.MM.DD HH24:MI:SS'), '') AS CT_REG_DATE,
+       NVL(B.FD_FILE_NAME, '') AS FD_FILE_NAME,
+       NVL(B.CT_DATE, '') AS CT_DATE,
+       NVL(B.VENUE_PLACE, '') AS VENUE_PLACE,
+       NVL(B.VENUE_PLACE_ADD, '') AS VENUE_PLACE_ADD,
+       NVL(B.CT_AGE, '') AS CT_AGE,
+       NVL(B.CAPACITY, '') AS CAPACITY,   
+       NVL(C.USER_CATEGOLY, '') AS USER_CATEGOLY,
+       NVL(C.USER_INTRODUCE, '') AS USER_INTRODUCE,
+       NVL(D.FILE_PROFILE_NAME, '') AS FILE_PROFILE_NAME
+  FROM TBL_CT_BOARD A, TBL_FD_BOARD B, TBL_ARTIST C, TBL_ARTIST_PROFILE D
+ WHERE A.USER_ID = B.USER_ID
+   AND B.USER_ID = C.USER_ID
+   AND C.USER_ID = D.USER_ID
+   AND A.CT_BBS_SEQ = #{value}
+	 	 
+</select>
+
+
+
+
+
+<!-- 게시물 수정 -->
+<update id="boardUpdate" parameterType="com.icia.web.model.CtBoard">
+UPDATE TBL_CT_BOARD
+	   SET CT_BBS_TITLE = #{ctBbsTitle},
+	       CT_BBS_CONTENT = #{ctBbsContent},
+	       CT_FILE_ORG_NAME = #{ctFileOrgName},
+	       CT_FILE_NAME = #{ctFileName},
+	       CT_FILE_EXT = #{ctFileExt},
+	       CT_FILE_SIZE = #{ctFileSize}
+	 WHERE CT_BBS_SEQ = #{ctBbsSeq}
+</update>
+
+<!-- 게시물 삭제 -->
+<delete id="boardDelete" parameterType="long">
+	DELETE FROM TBL_CT_BOARD
+  	WHERE CT_BBS_SEQ = #{value}
+</delete>
+
+<!-- 첨부파일 삭제 -->
+<delete id="boardFileDelete" parameterType="long">
+	 DELETE FROM TBL_CT_BOARD_FILE
+	  WHERE CT_FILE_SEQ = #{value}
+</delete>
+
+
+<!-- ctlist 캐러셀 랜덤 포스터 -->
+<select id="randomSelect" resultMap="ctResultMap">
+
+
+	SELECT FD_FILE_NAME,
+	       CT_BBS_TITLE
+	  FROM (SELECT NVL(A.FD_FILE_NAME, '') AS FD_FILE_NAME,
+	               NVL(B.CT_BBS_TITLE, '') AS CT_BBS_TITLE
+	          FROM TBL_FD_BOARD A, TBL_CT_BOARD B
+	         WHERE A.FD_BBS_SEQ = B.FD_BBS_SEQ
+	         ORDER BY DBMS_RANDOM.VALUE)
+	 WHERE ROWNUM <![CDATA[<=]]> 5
+
+</select>
+
+
+
+
+
+
+
+
+<!-- 배정현 공연 결제-->
+<insert id="ctPaymentInsert" parameterType="com.icia.web.model.CtPm">
+INSERT INTO TBL_CT_PM (
+                       PAYMENT_NUM,
+                       USER_ID,
+                       CT_BBS_SEQ,
+                       PM_DATE,
+                       PM_STATUS)
+ VALUES (
+         #{paymentNum},
+         #{userId},
+         #{ctBbsSeq},
+         SYSDATE,
+         'N')
+</insert>
+
+
+<!-- 
+	배정현 결제정보 가져와서  결제 정보 셀렉트
+	 fdPmSelect 
+-->
+<select id="ctPmSelect" parameterType="String" resultMap="ctPmResultMap">
+SELECT
+    PAYMENT_NUM,
+    USER_ID,
+    CT_BBS_SEQ,
+    NVL(TO_CHAR(PM_DATE, 'YYYY.MM.DD'), '') AS PM_DATE,
+    PM_STATUS
+  FROM TBL_CT_PM
+ WHERE PAYMENT_NUM =#{paymentNum}   
+</select>
+
+
+
+
+<select id="ctWaitList" resultMap="ctResultMap">
+
+SELECT A.USER_ID,
+       A.FD_BBS_SEQ,
+       NVL(A.FD_STATUS3, '') AS FD_STATUS3,
+       NVL(B.CT_BBS_TITLE, '') AS CT_BBS_TITLE,
+       NVL(B.CT_PAY_TYPE, '') AS CT_PAY_TYPE,
+       NVL(B.CT_PRICE, '') AS CT_PRICE,
+       NVL(TO_CHAR(B.CT_REG_DATE, 'YYYY.MM.DD'), '') AS CT_REG_DATE
+FROM TBL_FD_BOARD A, TBL_CT_BOARD B
+WHERE A.FD_BBS_SEQ = B.FD_BBS_SEQ
+AND A.FD_STATUS3 = 'W'
+
+</select>
+
+
+
+
+
+</mapper>

@@ -1,0 +1,375 @@
+@font-face {
+  /* 애플산돌고딕 폰트 적용 */
+  font-family: "PretendardVariable";
+  src: url("/resources/font/PretendardVariable.ttf");
+  font-weight: normal;
+}
+
+/*
+    DEMO STYLE
+*/
+
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+body {
+  font-family: "PretendardVariable", sans-serif !important;
+  font-style: normal;
+  font-weight: 700;
+  background: #f8f8fa;
+  color: rgb(176, 176, 176);
+}
+
+p {
+  font-weight: 300;
+  line-height: 1.7em;
+  color: #999;
+}
+
+a,
+a:hover,
+a:focus {
+  color: inherit;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.navbar {
+  background: white;
+
+  border-radius: 0;
+  height: 140px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 1rem 40px !important;
+}
+
+.navbar-btn {
+  box-shadow: none;
+  outline: none !important;
+  border: none;
+}
+.mainlogo
+{
+  z-index: 800;
+  float: none;
+  max-width: 50%;
+  max-height: 50%;
+  object-fit: contain;
+}
+.line {
+  width: 100%;
+  height: 1px;
+  border-bottom: 1px dashed #ddd;
+  margin: 40px 0;
+}
+
+/* ---------------------------------------------------
+    SIDEBAR STYLE
+----------------------------------------------------- */
+
+.wrapper {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+}
+
+.sub-title {
+  padding-left: 8px;
+}
+
+#sidebar {
+  min-width: 300px;
+  max-width: 300px;
+  background: #353535;
+  color: rgb(176, 176, 176);
+  transition: all 0.3s;
+}
+
+#sidebar.active {
+  margin-left: -250px;
+}
+
+#sidebar .sidebar-header {
+  padding: 20px;
+  background: #353535;
+  color: #f1a712;
+  height:140px;
+  text-align: center;
+  border-bottom: 1px solid #4f4f4f;
+}
+
+#sidebar .sidebar-header h2 {
+  font-weight: bold;
+  line-height: 70px;
+}
+
+#sidebar ul.components {
+  padding: 20px 0;
+  border-bottom: 1px solid #4f4f4f;
+}
+
+#sidebar ul p {
+  color: #fff;
+  padding: 10px;
+}
+
+#sidebar ul li a {
+  padding: 10px;
+  font-size: 1.1em;
+  display: block;
+  color: #fff;
+}
+
+#sidebar ul li a:hover {
+  color: #7386d5;
+  background: #fff;
+}
+
+#sidebar ul li.active > a {
+  color: #fff;
+  background: #eba009;
+}
+
+a[aria-expanded="false"] {
+  color: #fff;
+  background: #353535;
+}
+
+.sidebar ul li.active > a {
+  background: green; /* 활성화된 메뉴 배경색 지정 */
+}
+
+a[data-toggle="collapse"] {
+  position: relative;
+}
+
+.dropdown-toggle::after {
+  display: block;
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+}
+
+ul ul a {
+  font-size: 0.9em !important;
+  padding-left: 30px !important;
+  background: #f1a712;
+}
+
+ul.CTAs {
+  padding: 20px;
+}
+
+ul.CTAs a {
+  text-align: center;
+  font-size: 0.9em !important;
+  display: block;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+a.download {
+  background: #fff;
+  color: #7386d5;
+}
+
+a.article,
+a.article:hover {
+  background: #6d7fcc !important;
+  color: #fff !important;
+}
+
+/* ---------------------------------------------------
+    CONTENT STYLE
+----------------------------------------------------- */
+
+#content {
+  width: 100%;
+
+  min-height: 100vh;
+  transition: all 0.3s;
+}
+
+/* ---------------------------------------------------
+    MEDIAQUERIES
+----------------------------------------------------- */
+
+@media (max-width: 768px) {
+  #sidebar {
+    margin-left: -250px;
+  }
+  #sidebar.active {
+    margin-left: 0;
+  }
+  #sidebarCollapse span {
+    display: none;
+  }
+}
+
+.main-header {
+  height: 120px;
+  margin: auto;
+  text-align: center;
+  line-height: 120px;
+  background-color: red;
+}
+
+.content-nav {
+  margin: 25px 2% 25px 2.3%;
+}
+
+.content-container {
+  padding: 20px 20px 20px 45px;
+}
+
+.content-main {
+  padding: 10px 10px 10px 10px;
+  color: rgb(176, 176, 176);
+  background-color: white !important;
+
+  border-radius: 20px 20px 20px 20px;
+
+  margin: 2% 0% 2% 2%;
+}
+
+.content-search {
+  margin: 2% 0% 20px 2%;
+  display: flex;
+}
+
+.search-select {
+  margin-right: auto;
+}
+
+.search-input {
+  display: flex;
+  align-items: center;
+}
+
+/* 셀렉트박스에 스타일 적용 */
+.selectbox {
+  position: relative;
+  width: 200px;
+
+  z-index: 1;
+  border: none;
+  border-bottom: 1px solid rgb(176, 176, 176);
+  color: rgb(176, 176, 176);
+  outline: none;
+}
+.selectbox:before {
+  width: 100%;
+  height: auto;
+  line-height: normal;
+
+  padding: 0.8em 0.5em;
+  border: none; /* 테두리 없애기 */
+  opacity: 0;
+  filter: alpha(opacity=0);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: #f8f8fa;
+  color: #424242bc !important;
+  outline: none;
+}
+.selectbox label {
+  position: absolute;
+  top: 1px;
+  left: 5px;
+  padding: 0.8em 0.5em;
+  color: #424242bc !important;
+  z-index: -1;
+}
+
+.selectbox select {
+  width: 100%;
+  height: auto;
+  line-height: normal;
+  font-family: inherit;
+  padding: 0.8em 0.5em;
+  border: none;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: #424242bc;
+  color: #f8f8fa;
+  outline: none;
+}
+
+.search-bar {
+  border: none;
+  border-bottom: 1px solid rgb(176, 176, 176);
+}
+
+.search-btn {
+  border: 2px solid rgb(147, 147, 147);
+}
+
+/* 테이블 */
+
+.my-table {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 1rem;
+  background-color: transparent;
+  border-collapse: collapse;
+}
+.my-table td {
+  padding: 0.75rem;
+  vertical-align: middle;
+  border-top: 1px solid #dee2e6;
+}
+.my-table thead th {
+  vertical-align: bottom;
+  font-size: 20px;
+}
+.my-table tbody + tbody {
+  border-top: 2px solid #dee2e6;
+}
+.my-table .table {
+  background-color: #fff;
+}
+.my-table .table-sm td,
+.my-table .table-sm th {
+  padding: 0.3rem;
+}
+.my-table .table-bordered {
+  border: 1px solid #dee2e6;
+}
+.my-table .table-bordered td,
+.my-table .table-bordered th {
+  border: 1px solid #dee2e6;
+}
+.my-table .table-bordered thead td,
+.my-table .table-bordered thead th {
+  border-bottom-width: 2px;
+}
+.my-table .table-borderless td,
+.my-table .table-borderless th {
+  border: 0;
+}
+.my-table .table-striped tbody tr:nth-of-type(odd){
+  background-color: rgba(0, 0, 0, 0.05);
+}
+tr
+{
+	text-align: center;
+}
+
+    .MyBtn,
+    .MyBtn:focus,
+    .MyBtn:active,
+    .MyBtn:hover,
+    .MyBtn:focus:not(:active),
+    .MyBtn:not(:disabled):not(.disabled):active:focus,
+    .MyBtn:active:not(:focus),
+    .MyBtn:not(:disabled):not(.disabled):active{
+    background-color: #f1a712;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    border-radius: 0.25rem;
+    outline: none;
+    color: white;
+        }

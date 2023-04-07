@@ -1,0 +1,651 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icia.web.dao.FdBoardDao">
+
+	<!-- 게시물 resultMap -->
+	<resultMap id="fdBoardResultMap" type="com.icia.web.model.FdBoard">
+		<id column="FD_BBS_SEQ" property="fdBbsSeq" />
+		<result column="USER_ID" property="userId" />
+		<result column="FD_BBS_TITLE" property="fdBbsTitle" />
+		<result column="READ_CNT" property="readCnt" />
+		<result column="REG_DATE" property="regDate" />
+		<result column="FD_START_DATE" property="fdStartDate" />
+		<result column="FD_END_DATE" property="fdEndDate" />
+		<result column="TARGET_PRICE" property="targetPrice" />
+		<result column="CT_DATE" property="ctDate" />
+		<result column="CT_AGE" property="ctAge" />
+		<result column="VENUE_PLACE" property="venuePlace" />
+		<result column="VENUE_PLACE_ADD" property="venuePlaceAdd" />
+		<result column="CAPACITY" property="capacity" />
+		<result column="FD_STATUS" property="fdStatus" />
+		<result column="FD_STATUS2" property="fdStatus2" />
+		<result column="FD_STATUS3" property="fdStatus3" />
+		<result column="CURRENT_AMOUNT" property="currentAmount" />
+	    <result column="FD_FILE_ORGNAME" property="fdFileOrgName" />
+		<result column="FD_FILE_NAME" property="fdFileName" />
+		<result column="FD_FILE2_ORGNAME" property="fdFile2OrgName" />
+		<result column="FD_FILE2_NAME" property="fdFile2Name" />
+		<result column="FD_FILE_EXT" property="fdFileExt" />
+		<result column="FD_FILE_SIZE" property="fdFileSize" />
+		
+		<result column="USER_CATEGOLY" property="userCategoly" />
+		<result column="USER_INTRODUCE" property="userIntroduce" />
+		<result column="FILE_PROFILE_NAME" property="fileProfileName" />
+	</resultMap>
+
+	<resultMap id="fdTierResultMap" type="com.icia.web.model.FdTier">
+		<result column="FD_BBS_SEQ" property="fdBbsSeq" />
+		<result column="PRICE1" property="price1" />
+		<result column="PRICE2" property="price2" />
+		<result column="PRICE3" property="price3" />
+		<result column="PRICE4" property="price4" />
+		<result column="PRODUCT1" property="product1" />
+		<result column="PRODUCT2" property="product2" />
+		<result column="PRODUCT3" property="product3" />
+		<result column="PRODUCT4" property="product4" />
+		<result column="TIER_CNT" property="tierCnt" />
+	</resultMap>
+
+	<resultMap id="fdPmResultMap" type="com.icia.web.model.FdPm">
+		<id column="PAYMENT_NUM" property="paymentNum"/>
+		<result column="USER_ID" property="userId" />
+		<result column="TIER_NUM" property="tierNum" />
+		<result column="FD_BBS_SEQ" property="fdBbsSeq" />
+		<result column="PM_DATE" property="pmDate" />
+		<result column="PM_STATUS" property="pmStatus" />
+	</resultMap>
+
+
+
+
+<!-- 리절트 맵에 ctAge 없어서 추가함 -->
+<select id="boardSelect" parameterType="long" resultMap="fdBoardResultMap">
+
+
+		SELECT FD_BBS_SEQ,
+		NVL(FD_BBS_TITLE, '') AS FD_BBS_TITLE,
+		NVL(USER_ID, '') AS USER_ID,
+		NVL(READ_CNT, 0) AS READ_CNT,
+		NVL(TO_CHAR(REG_DATE,'YYYY.MM.DD HH24:MI:SS'),'') AS REG_DATE,
+		NVL(TO_CHAR(TO_DATE(FD_START_DATE,'YY/MM/DD'),'YYYY-MM-DD'),'') AS FD_START_DATE,
+		NVL(FD_END_DATE, '') AS FD_END_DATE,
+		NVL(TARGET_PRICE, 0) AS TARGET_PRICE,
+		NVL(CT_DATE, '') AS CT_DATE,
+		NVL(VENUE_PLACE, '') AS VENUE_PLACE,
+		NVL(CT_AGE, '') AS CT_AGE,
+		NVL(CAPACITY, 0) AS CAPACITY,
+		NVL(FD_STATUS, '') AS FD_STATUS,
+		NVL(FD_STATUS2, '') AS FD_STATUS2,
+		NVL(CURRENT_AMOUNT,0) AS CURRENT_AMOUNT,
+		NVL(USER_ID,'') AS USER_ID,
+   		NVL(FD_FILE_ORGNAME, '') AS FD_FILE_ORGNAME,
+   		NVL(FD_FILE_NAME, '') AS FD_FILE_NAME,
+   		NVL(FD_FILE2_ORGNAME, '') AS FD_FILE2_ORGNAME,
+   		NVL(FD_FILE2_NAME, '') AS FD_FILE2_NAME,
+    	NVL(FD_FILE_EXT, '') AS FD_FILE_EXT,
+    	NVL(FD_FILE_SIZE, '') AS FD_FILE_SIZE
+    	
+		FROM
+		TBL_FD_BOARD
+		WHERE FD_BBS_SEQ = #{value}
+</select>
+
+
+<select id="tierSelect" parameterType="long" resultMap="fdTierResultMap">
+		SELECT
+				FD_BBS_SEQ,
+				NVL(PRICE1, 0) AS PRICE1,
+				NVL(PRICE2, 0) AS PRICE2,
+				NVL(PRICE3, 0) AS PRICE3,
+				NVL(PRICE4, 0) AS PRICE4,
+				NVL(PRODUCT1, '') AS PRODUCT1,
+				NVL(PRODUCT2, '') AS PRODUCT2,
+				NVL(PRODUCT3, '') AS PRODUCT3,
+				NVL(PRODUCT4, '') AS PRODUCT4,
+				NVL(TIER_CNT, 0) AS TIER_CNT
+		  FROM TBL_FD_TIER
+		 WHERE FD_BBS_SEQ = #{fdBbsSeq}
+
+	</select>
+
+	<update id="tierCnt" parameterType="long">
+		UPDATE TBL_FD_TIER
+		SET
+		TIER_CNT = NVL(TIER_CNT, 0)+1
+		WHERE
+			 FD_BBS_SEQ = #{fdBbsSeq}
+	</update>
+
+
+
+<update id="currentAmountUpdate" parameterType="map">
+
+UPDATE TBL_FD_BOARD
+   SET CURRENT_AMOUNT = NVL(CURRENT_AMOUNT, 0) + #{price}
+ WHERE FD_BBS_SEQ = #{fdBbsSeq}
+</update>
+
+
+	<!-- 결제 -->
+	<insert id="fdPaymentInsert" parameterType="com.icia.web.model.FdPm">
+		INSERT INTO TBL_FD_PM (
+		PAYMENT_NUM,
+		USER_ID,
+		TIER_NUM,
+		FD_BBS_SEQ,
+		PM_DATE,
+		PM_STATUS
+		)
+		VALUES (
+		#{paymentNum},
+		#{userId},
+		#{tierNum},
+		#{fdBbsSeq},
+		SYSDATE,
+		'N'
+		)
+	</insert>
+
+
+
+
+
+
+<!-- 0308 배정현
+	결제정보 가져와서  결제 정보 셀렉트
+	 fdPmSelect 
+-->
+<select id="fdPmSelect" parameterType="String" resultMap="fdPmResultMap">
+SELECT
+    PAYMENT_NUM,
+    USER_ID,
+    TIER_NUM,
+    FD_BBS_SEQ,
+    PM_DATE,
+    PM_STATUS
+  FROM TBL_FD_PM
+ WHERE PAYMENT_NUM =#{paymentNum}   
+</select>
+
+
+
+
+<!-- 배정현 펀딩게시판 리스트 -->
+<select id="fundboardList" parameterType="com.icia.web.model.FdBoard" resultMap="fdBoardResultMap">
+SELECT FD_BBS_SEQ,
+       USER_ID,
+       FD_BBS_TITLE,
+       READ_CNT,
+       FD_START_DATE,
+       FD_END_DATE,
+       TARGET_PRICE,
+       CT_DATE,
+       VENUE_PLACE,
+       CT_AGE,
+       CAPACITY,
+       FD_STATUS,
+       FD_STATUS2,
+       FD_STATUS3,
+       CURRENT_AMOUNT,
+       FD_FILE_ORGNAME,
+       FD_FILE_NAME,
+       FD_FILE_EXT,
+       FD_FILE_SIZE,
+       REG_DATE,
+       USER_CATEGOLY,
+       USER_INTRODUCE,
+       FILE_PROFILE_NAME
+	  FROM (SELECT ROWNUM AS RNUM,
+	               FD_BBS_SEQ,
+                   USER_ID,
+                   FD_BBS_TITLE,
+                   READ_CNT,
+                   FD_START_DATE,
+                   FD_END_DATE,
+                   TARGET_PRICE,
+                   CT_DATE,
+                   VENUE_PLACE,
+                   CT_AGE,
+                   CAPACITY,
+                   FD_STATUS,
+                   FD_STATUS2,
+                   FD_STATUS3,
+                   CURRENT_AMOUNT,
+                   FD_FILE_ORGNAME,
+                   FD_FILE_NAME,
+                   FD_FILE_EXT,
+                   FD_FILE_SIZE,
+                   REG_DATE,
+                   USER_CATEGOLY,
+                   USER_INTRODUCE,
+                   FILE_PROFILE_NAME
+	          FROM (SELECT A.FD_BBS_SEQ,
+	                       A.USER_ID,
+	                       NVL(A.FD_BBS_TITLE, '') AS FD_BBS_TITLE,
+	                       NVL(A.READ_CNT, 0) AS READ_CNT,
+	                       NVL(A.FD_START_DATE, '') AS FD_START_DATE,
+                           NVL(A.FD_END_DATE, '') AS FD_END_DATE,
+                           NVL(A.TARGET_PRICE, 0) AS TARGET_PRICE,
+                           NVL(A.CT_DATE, '') AS CT_DATE,
+                           NVL(A.VENUE_PLACE, '') AS VENUE_PLACE,
+                           NVL(A.CT_AGE, '') AS CT_AGE,
+                           NVL(A.CAPACITY, 0) AS CAPACITY,
+                           NVL(A.FD_STATUS, ' ') AS FD_STATUS,
+                           NVL(A.FD_STATUS2, ' ') AS FD_STATUS2,
+                           NVL(A.FD_STATUS3, ' ') AS FD_STATUS3,
+                           NVL(A.CURRENT_AMOUNT, 0) AS CURRENT_AMOUNT,
+                           NVL(A.FD_FILE_ORGNAME, '') AS FD_FILE_ORGNAME,
+                           NVL(A.FD_FILE_NAME, '') AS FD_FILE_NAME,
+                           NVL(A.FD_FILE_EXT, '') AS FD_FILE_EXT,
+                           NVL(A.FD_FILE_SIZE, 0) AS FD_FILE_SIZE,
+	                       NVL(TO_CHAR(A.REG_DATE, 'YYYY.MM.DD HH24:MI:SS'), '') AS REG_DATE,
+                           NVL(B.USER_CATEGOLY, 0) AS USER_CATEGOLY,
+                           NVL(B.USER_INTRODUCE, 0) AS USER_INTRODUCE,
+                           NVL(C.FILE_PROFILE_NAME, 0) AS FILE_PROFILE_NAME
+	                  FROM TBL_FD_BOARD A, TBL_ARTIST B, TBL_ARTIST_PROFILE C
+	                 WHERE A.USER_ID = B.USER_ID
+	                   AND B.USER_ID = C.USER_ID    
+<if test='searchType != null and searchType != ""'>
+	<choose>
+		<when test='searchType == "1"'>
+	                   AND A.USER_IF LIKE || #{searchValue} || '%'
+		</when>
+		<when test='searchType == "2"'>
+	                   AND A.FD_BBS_TITLE LIKE '%' || #{searchValue} || '%'
+		</when>     
+        <when test='searchType == "4"'>
+	                   AND B.USER_CATEGOLY LIKE '기타'
+		</when>
+
+
+	</choose>	                   
+</if>
+	
+<if test='categolyValue != null'>
+	<choose>
+	<when test="categolyValue == '힙합'">
+		AND B.USER_CATEGOLY LIKE  '힙합'
+	</when>
+	<when test="categolyValue == '재즈'">
+		AND B.USER_CATEGOLY LIKE  '재즈'
+	</when>
+	<when test="categolyValue == '댄스'">
+		AND B.USER_CATEGOLY LIKE  '댄스'
+	</when>
+	<when test="categolyValue == '기타'">
+		AND B.USER_CATEGOLY LIKE  '기타'
+	</when>
+	</choose>	                   
+</if>	
+
+
+	                 ORDER BY A.FD_BBS_SEQ DESC))
+	 WHERE RNUM <![CDATA[>=]]> #{startRow}
+	   AND RNUM <![CDATA[<=]]> #{endRow}
+</select>
+
+
+
+<!-- 배정현 0320펀딩승인 처리 업데이트  -->
+<update id="fdApprove" parameterType="long">
+                
+	UPDATE TBL_FD_BOARD
+	SET
+	    FD_STATUS ='Y'
+	WHERE
+	    FD_BBS_SEQ =#{fdBbsSeq}
+</update>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 박재영 추가 인서트 메소드 -->
+<insert id="fdBoardInsert" parameterType="com.icia.web.model.FdBoard">
+<!-- 선행처리기(시퀀스 생성) -->
+<selectKey resultType="long" keyProperty="fdBbsSeq" order="BEFORE">
+	SELECT SEQ_FD_BOARD_SEQ.NEXTVAL FROM DUAL
+</selectKey>
+	INSERT INTO TBL_FD_BOARD (
+		FD_BBS_SEQ,
+		FD_BBS_TITLE,
+		REG_DATE,
+		FD_START_DATE,
+		FD_END_DATE,
+		TARGET_PRICE,
+		CT_DATE,
+		VENUE_PLACE,
+		VENUE_PLACE_ADD,
+		CT_AGE,
+		CAPACITY,
+		FD_STATUS,
+		USER_ID,
+		FD_FILE_ORGNAME,
+		FD_FILE_NAME,
+		FD_FILE_EXT,
+		FD_FILE_SIZE,
+		CURRENT_AMOUNT,
+	    FD_FILE2_ORGNAME,
+		FD_FILE2_NAME
+	) VALUES (
+	    #{fdBbsSeq},
+	    #{fdBbsTitle},
+	    SYSDATE,
+	    SYSDATE,
+	    #{fdEndDate},
+	    #{targetPrice},
+	    #{ctDate},
+	    #{venuePlace},
+	    #{venuePlaceAdd},
+	    #{ctAge},
+	    #{capacity},
+	    #{fdStatus},
+	    #{userId},
+	    #{fdFileOrgName},
+	    #{fdFileName},
+	    #{fdFileExt},
+	    #{fdFileSize},
+	    #{currentAmount},
+	    #{fdFile2OrgName},
+	    #{fdFile2Name}
+	)
+</insert>
+
+
+
+<!-- 티어정보 업데이트 -->
+
+<insert id="fdTierInsert" parameterType="com.icia.web.model.FdTier">
+<selectKey resultType="long" keyProperty="fdBbsSeq" order="BEFORE">
+	SELECT SEQ_FD_BOARD_SEQ.CURRVAL FROM DUAL
+</selectKey>
+
+	INSERT INTO TBL_FD_TIER (
+	    FD_BBS_SEQ,
+	    PRICE1,
+	    PRICE2,
+	    PRICE3,
+	    PRICE4,
+		PRODUCT1,
+		PRODUCT2,
+		PRODUCT3,
+		PRODUCT4,
+		TIER_CNT
+	) VALUES (
+	    #{fdBbsSeq},
+	    #{price1},
+	    #{price2},
+	    #{price3},
+	    #{price4},
+	    #{product1},
+	    #{product2},
+	    #{product3},
+	    #{product4},
+	    #{tierCnt} 
+	)
+</insert>
+
+
+
+<select id = "fdPmList" parameterType = "com.icia.web.model.FdPm" resultMap="fdPmResultMap">
+		SELECT PAYMENT_NUM,
+	       USER_ID,
+	       TIER_NUM,
+	       FD_BBS_SEQ,
+	       PM_DATE,
+	       PM_STATUS
+	  FROM (SELECT ROWNUM AS RNUM,
+	               PAYMENT_NUM,
+	               USER_ID,
+	               TIER_NUM,
+	               FD_BBS_SEQ,
+	               PM_DATE,
+	               PM_STATUS
+	          FROM (SELECT PAYMENT_NUM,
+	                       USER_ID,
+	                       NVL(TIER_NUM, '') AS TIER_NUM,
+	                       NVL(FD_BBS_SEQ, '') AS FD_BBS_SEQ,
+	                       NVL(TO_CHAR(PM_DATE, 'YYYY.MM.DD HH24:MI:SS'),'') AS PM_DATE,
+	                       NVL(PM_STATUS, 'N') AS PM_STATUS
+	                  FROM TBL_FD_PM
+					 WHERE USER_ID = #{userId}
+	                 ORDER BY PAYMENT_NUM DESC))
+	                 </select>
+
+
+<!-- 박재영 추가 0308 펀딩게시물 총 수 구하기 -->
+
+<select id="fundListCount" parameterType="com.icia.web.model.FdBoard" resultType="long">
+	SELECT COUNT(A.FD_BBS_SEQ) AS CNT
+	  FROM TBL_FD_BOARD A, TBL_ARTIST B
+	 WHERE A.USER_ID = B.USER_ID
+<if test='searchType != null and searchType != ""'>	
+	<choose> 
+		<when test='searchType == "1"'>
+	   AND B.USER_CATEGOLY LIKE '힙합'
+		</when>
+		<when test='searchType == "2"'>
+	   AND B.USER_CATEGOLY LIKE '재즈'
+		</when>
+		<when test='searchType == "3"'>
+	   AND B.USER_CATEGOLY LIKE '댄스'
+	   	</when>
+	    <when test='searchType == "4"'>
+	   AND B.USER_CATEGOLY LIKE '기타'
+	   	</when>
+	</choose>	   
+</if>
+<if test='categolyValue != null'>
+	<choose>
+	<when test="categolyValue == '힙합'">
+		AND B.USER_CATEGOLY LIKE  '힙합'
+	</when>
+	<when test="categolyValue == '재즈'">
+		AND B.USER_CATEGOLY LIKE  '재즈'
+	</when>
+	<when test="categolyValue == '댄스'">
+		AND B.USER_CATEGOLY LIKE  '댄스'
+	</when>
+	<when test="categolyValue == '기타'">
+		AND B.USER_CATEGOLY LIKE  '기타'
+	</when>
+	</choose>	                   
+</if>	
+</select>
+
+
+ 
+<!-- 리스트 모두 가져오기 -->
+<!-- 
+<select id="fundboardList" parameterType="com.icia.web.model.FdBoard" resultMap="fdBoardResultMap">
+SELECT FD_BBS_SEQ,
+       USER_ID,
+       FD_BBS_TITLE,
+       FD_BBS_CONTENT,
+       READ_CNT,
+       FD_START_DATE,
+       FD_END_DATE,
+       TARGET_PRICE,
+       CT_DATE,
+       VENUE_PLACE,
+       CT_AGE,
+       CAPACITY,
+       FD_STATUS,
+       CURRENT_AMOUNT,
+       FD_FILE_ORGNAME,
+       FD_FILE_NAME,
+       FD_FILE_EXT,
+       FD_FILE_SIZE,
+       REG_DATE,
+       USER_CATEGOLY,
+       USER_INTRODUCE,
+       FILE_PROFILE_NAME
+	  FROM (SELECT ROWNUM AS RNUM,
+	               FD_BBS_SEQ,
+                   USER_ID,
+                   FD_BBS_TITLE,
+                   FD_BBS_CONTENT,
+                   READ_CNT,
+                   FD_START_DATE,
+                   FD_END_DATE,
+                   TARGET_PRICE,
+                   CT_DATE,
+                   VENUE_PLACE,
+                   CT_AGE,
+                   CAPACITY,
+                   FD_STATUS,
+                   CURRENT_AMOUNT,
+                   FD_FILE_ORGNAME,
+                   FD_FILE_NAME,
+                   FD_FILE_EXT,
+                   FD_FILE_SIZE,
+                   REG_DATE,
+                   USER_CATEGOLY,
+                   USER_INTRODUCE,
+                   FILE_PROFILE_NAME
+	          FROM (SELECT A.FD_BBS_SEQ,
+	                       A.USER_ID,
+	                       NVL(A.FD_BBS_TITLE, '') AS FD_BBS_TITLE,
+	                       NVL(A.FD_BBS_CONTENT, '') AS FD_BBS_CONTENT,
+	                       NVL(A.READ_CNT, 0) AS READ_CNT,
+	                       NVL(A.FD_START_DATE, '') AS FD_START_DATE,
+                           NVL(A.FD_END_DATE, '') AS FD_END_DATE,
+                           NVL(A.TARGET_PRICE, 0) AS TARGET_PRICE,
+                           NVL(A.CT_DATE, '') AS CT_DATE,
+                           NVL(A.VENUE_PLACE, '') AS VENUE_PLACE,
+                           NVL(A.CT_AGE, '') AS CT_AGE,
+                           NVL(A.CAPACITY, 0) AS CAPACITY,
+                           NVL(A.FD_STATUS, ' ') AS FD_STATUS,
+                           NVL(A.CURRENT_AMOUNT, 0) AS CURRENT_AMOUNT,
+                           NVL(A.FD_FILE_ORGNAME, '') AS FD_FILE_ORGNAME,
+                           NVL(A.FD_FILE_NAME, '') AS FD_FILE_NAME,
+                           NVL(A.FD_FILE_EXT, '') AS FD_FILE_EXT,
+                           NVL(A.FD_FILE_SIZE, 0) AS FD_FILE_SIZE,
+	                       NVL(TO_CHAR(A.REG_DATE, 'YYYY.MM.DD HH24:MI:SS'), '') AS REG_DATE,
+                           NVL(B.USER_CATEGOLY, 0) AS USER_CATEGOLY,
+                           NVL(B.USER_INTRODUCE, 0) AS USER_INTRODUCE,
+                           NVL(C.FILE_PROFILE_NAME, 0) AS FILE_PROFILE_NAME
+	                  FROM TBL_FD_BOARD A, TBL_ARTIST B, TBL_ARTIST_PROFILE C
+	                 WHERE A.USER_ID = B.USER_ID
+	                   AND B.USER_ID = C.USER_ID    
+<if test='searchType != null and searchType != ""'>
+	<choose>
+		<when test='searchType == "1"'>
+	                   AND B.USER_CATEGOLY LIKE '힙합'
+		</when>
+		<when test='searchType == "2"'>
+	                   AND B.USER_CATEGOLY LIKE '재즈'
+		</when>
+		<when test='searchType == "3"'>
+	                   AND B.USER_CATEGOLY LIKE '댄스'
+		</when>       
+        <when test='searchType == "4"'>
+	                   AND B.USER_CATEGOLY LIKE '기타'
+		</when>
+	</choose>	                   
+</if>	
+	                 ORDER BY A.FD_BBS_SEQ DESC))
+	 WHERE RNUM <![CDATA[>=]]> #{startRow}
+	   AND RNUM <![CDATA[<=]]> #{endRow}
+</select>
+-->
+
+<!-- 0320 박재영 쿼리추가 메인페이지 뿌릴 최근 펀딩 2개 -->
+<select id="fdCorrentSelect" resultMap="fdBoardResultMap">
+SELECT * 
+FROM (
+    SELECT 
+        FD_BBS_SEQ,
+        NVL(FD_BBS_TITLE, '') AS FD_BBS_TITLE,
+        NVL(TARGET_PRICE, '') AS TARGET_PRICE,
+        FD_STATUS,
+        USER_ID,
+        NVL(FD_FILE_NAME, '') AS FD_FILE_NAME
+    FROM 
+        TBL_FD_BOARD
+    WHERE 
+        FD_STATUS = 'Y'
+    ORDER BY 
+        FD_BBS_SEQ DESC
+)
+WHERE ROWNUM <![CDATA[<=]]> 2
+</select>
+
+
+ <select id="fdRecommendSelect" resultMap="fdBoardResultMap">
+SELECT FD_BBS_SEQ, FD_BBS_TITLE, TARGET_PRICE, FD_STATUS, USER_ID, FD_FILE_NAME
+FROM (
+  SELECT FD_BBS_SEQ,
+         NVL(FD_BBS_TITLE, '') AS FD_BBS_TITLE,
+         NVL(TARGET_PRICE, '') AS TARGET_PRICE,
+         FD_STATUS,
+         USER_ID,
+         NVL(FD_FILE_NAME, '') AS FD_FILE_NAME,
+         ROW_NUMBER() OVER (ORDER BY DBMS_RANDOM.VALUE) AS RN
+    FROM TBL_FD_BOARD
+   WHERE FD_STATUS = 'Y')
+WHERE RN <![CDATA[<=]]> 9
+</select>
+
+
+<!-- 23.03.20 박재윤 artistMypage 에서 사용자 펀딩 정보 조회쿼리 -->
+<select id="artistMypageFdSelect" parameterType="String" resultMap="fdBoardResultMap">
+
+
+	 SELECT FD_BBS_SEQ,
+			NVL(FD_BBS_TITLE, '') AS FD_BBS_TITLE,
+			NVL(USER_ID, '') AS USER_ID,
+			NVL(READ_CNT, 0) AS READ_CNT,
+			NVL(TO_CHAR(REG_DATE,'YYYY.MM.DD
+			HH24:MI:SS'),'') AS REG_DATE,
+			NVL(FD_START_DATE, '') AS FD_START_DATE,
+			NVL(FD_END_DATE, '') AS FD_END_DATE,
+			NVL(TARGET_PRICE, 0) AS TARGET_PRICE,
+			NVL(CT_DATE, '') AS CT_DATE,
+			NVL(VENUE_PLACE, '') AS VENUE_PLACE,
+			NVL(CT_AGE, '') AS CT_AGE,
+			NVL(CAPACITY, 0) AS CAPACITY,
+			NVL(FD_STATUS, '') AS FD_STATUS,
+			NVL(FD_STATUS2, '') AS FD_STATUS2,
+			NVL(CURRENT_AMOUNT,0) AS CURRENT_AMOUNT,
+			NVL(USER_ID,'') AS USER_ID,
+	   		NVL(FD_FILE_ORGNAME, '') AS FD_FILE_ORGNAME,
+	   		NVL(FD_FILE_NAME, '') AS FD_FILE_NAME,
+	   		NVL(FD_FILE2_ORGNAME, '') AS FD_FILE2_ORGNAME,
+	   		NVL(FD_FILE2_NAME, '') AS FD_FILE2_NAME,
+	    	NVL(FD_FILE_EXT, '') AS FD_FILE_EXT,
+	    	NVL(FD_FILE_SIZE, '') AS FD_FILE_SIZE
+	   FROM TBL_FD_BOARD
+	  WHERE USER_ID = #{userId}
+</select>
+
+<update id="fdSatatusUpdate" parameterType="long">
+	UPDATE TBL_FD_BOARD
+	SET FD_STATUS3 = 'W'
+	WHERE FD_BBS_SEQ = #{value}
+</update>
+
+<update id="ctApprove" parameterType="long">
+	UPDATE TBL_FD_BOARD
+	SET FD_STATUS3 = 'Y'
+	WHERE FD_BBS_SEQ = #{value}
+</update>
+
+
+
+</mapper>
+

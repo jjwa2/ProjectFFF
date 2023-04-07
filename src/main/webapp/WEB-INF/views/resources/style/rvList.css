@@ -1,0 +1,371 @@
+html body{
+  background-color: #191919;
+  color: #fff;
+}
+
+div
+{
+  box-sizing: border-box;
+}
+
+.main-background
+{
+  width: 100vw;
+  height: 100vh;
+  background-color: #191919;
+}
+
+
+.main-container
+{
+  width: 100vw;
+  height: 100vh;
+  background-color: #191919;
+}
+
+
+
+.caret {
+	color:#fff !important;
+}
+
+
+.select-dropdown  {
+	color:#fff !important;
+}
+
+.select-dropdown span {
+	color:#fff !important;
+	background-color: #191919;
+}
+
+.disabled {
+		color:#fff !important;
+	background-color: #191919!important;
+}
+
+.main-container-fff {
+  height: 1000px;
+  width: 100vw;
+}
+
+.main-body-fff {
+  width: 80vw;
+  height: 1000px;
+  display: flex;
+  margin: auto;
+}
+
+.main-body-card-top-fff {
+  width: 80%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.main-body-card-search-fff {
+  
+  width: 30%;
+  height: 7%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  color:fff;
+  position: relative;
+  left:68%;
+  margin-bottom: 10px;
+}
+
+.searchBox {
+	color:#fff !important;
+}
+
+
+
+.main-body-card-fff {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.main-body-card-section-fff {
+  width: 33%;
+  height: 45%;
+}
+
+
+.main-body-card-paging-fff {
+  width:100%;
+  height: 10%;
+  background-color: #191919;
+  display: flex;
+  justify-content: center;
+}
+
+ul {
+  list-style: none;
+}
+
+
+.card-body-write-btn {
+  padding: 10px;
+  margin-right: 40px;
+  display: flex;
+  justify-content: end;
+}
+
+
+.main-body-aside {
+  width: 20%;
+  height: 95%;
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+  margin: 0;
+}
+
+.main-body-aside-best {
+  width: 90%;
+  height: 40%;
+  margin-bottom: 10px;
+}
+
+.main-body-aside-banner {
+  width: 100%;
+  height: 50%;
+}
+
+.footer {
+  width: 100%;
+  height: 15%;
+}
+
+td {
+	padding:3px !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*카드 css*/
+
+.card-fff {
+  height: 100%;
+  width: 90%;
+  border-radius: 15px;
+  display: inline-block;
+  position: relative;
+  
+box-shadow:
+  1.6px 1.6px 1.2px rgba(0, 0, 0, 0.058),
+  3.4px 3.4px 2.7px rgba(0, 0, 0, 0.083),
+  5.8px 5.8px 4.6px rgba(0, 0, 0, 0.101),
+  8.7px 8.7px 6.9px rgba(0, 0, 0, 0.115),
+  12.5px 12.5px 10px rgba(0, 0, 0, 0.127),
+  17.7px 17.7px 14.2px rgba(0, 0, 0, 0.137),
+  25.1px 25.1px 20.1px rgba(0, 0, 0, 0.146),
+  36.5px 36.5px 29.2px rgba(0, 0, 0, 0.154),
+  56.3px 56.3px 45px rgba(0, 0, 0, 0.163),
+  100px 100px 80px rgba(0, 0, 0, 0.18)
+;
+  
+  overflow: hidden;
+  margin: 10px;
+}
+
+.card-header-fff {
+  -webkit-transition: 0.5s;
+  /*사파리 & 크롬*/
+  -moz-transition: 0.5s;
+  /*파이어폭스*/
+  -ms-transition: 0.5s;
+  /*인터넷 익스플로러*/
+  -o-transition: 0.5s;
+  /*오페라*/
+  transition: 0.5s;
+  width: 100%;
+  height: 70%;
+  border-radius: 15px 15px 0 0;
+}
+
+.card-img-fff {
+  width: 100%;
+  height: auto;
+}
+
+.card-fff:hover .card-header-fff {
+  opacity: 0.1;
+  height: 100px;
+}
+
+.card-title-fff {
+  color:#191919;
+  font-size: 20px;
+  font-weight: bold;
+  margin:0;
+  padding-bottom:4px;
+}
+
+.card-body-fff {
+  background-color: white;
+  opacity: 0.9;
+  padding-top:3px;
+}
+.card-body-header-fff {
+  color:#191919;
+  line-height: 18px;
+  margin: 10px 10px 0px 10px;
+}
+
+.card-body-description-fff {
+  opacity: 0.5;
+  color: black;
+  line-height: 25px;
+  -webkit-transition: .2s ease-in-out;
+  /*사파리&크롬*/
+  -moz-transition: .2s ease-in-out;
+  /*파이어폭스*/
+  -ms-transition: .2s ease-in-out;
+  /*익스플로러*/
+  -o-transition: .2s ease-in-out;
+  /*오페라*/
+  transition: .2s ease-in-out;
+  overflow: hidden;
+  height: 300px;
+  margin: 5px 20px;
+}
+
+
+
+.card-fff:hover .card-body-description-fff {
+  opacity: 1;
+  -webkit-transition: .5s ease-in-out;
+  -moz-transition: .5s ease-in-out;
+  -ms-transition: .5s ease-in-out;
+  -o-transition: .5s ease-in-out;
+  transition: .5s ease-in-out;
+
+}
+
+.card-body-description-fff {
+	color:#191919;
+  opacity: 0;
+}
+
+.card-fff:hover .card-body-footer-fff {
+  opacity: 0;
+}
+
+.card-body-nickname-fff {
+  margin: 0;
+  font-size: 15px;
+}
+
+.card-body-footer-fff {
+  color:#fff;
+  position: absolute; 
+  margin-top: 20px;
+  bottom: 0; 
+  height:28px;
+  width: 100%;
+  font-size: 11px;
+  padding: 0 20px;
+  padding-top:7px;
+  background-color: #191919;
+}
+
+.icon {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 2px;
+}
+.reg_date {
+  float: right;
+}
+
+.card-fff:hover .card-body-footer-fff 
+{
+  opacity: 0;
+}
+
+.best-list-title 
+{
+	color:#fff;
+    text-decoration: none;
+}
+
+
+.best-list-title:hover
+{
+  text-decoration: none;
+  cursor: pointer;
+  color: #f1a712;
+
+}
+
+input:focus {
+  border-bottom: 1px solid #f1a712 !important;
+  -webkit-box-shadow: 0 1px 0 0 #f1a712 !important;
+  -moz-box-shadow: 0 1px 0 0 #f1a712 !important;
+  box-shadow: 0 1px 0 0 #f1a712 !important;
+}
+ 
+
+.best-list-title:link:active, .best-list-title:visited:active 
+{
+  text-decoration: underline;
+
+}
+
+.th-title {
+	position: relative;
+	bottom:7px;
+}
+
+
+.fundingmain-hr
+{
+  width: 75%;
+  margin: auto;
+}
+.snstitle
+{
+  width: 70%;
+  margin: auto;
+  color: #fff;
+  text-align: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+.snstitlemain
+{
+  font-size: 350%;
+  font-family: 'Do Hyeon', sans-serif;
+}
+hr {
+  background-color: #fff;
+  padding: 0;
+  margin: 80px;
+}
+
+hr.hr-1 {
+  border: 0;
+  height: 1px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+}
+

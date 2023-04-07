@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icia.web.dao.ArtistDao">
+
+<!-- 게시물 resultMap -->
+<resultMap id="ArtisResultMap" type="com.icia.web.model.Artist">
+	<result column="USER_ID" property="userId" />
+	<result column="USER_CATEGOLY" property="userCategoly" />
+	<result column="USER_INTRODUCE" property="userIntroduce" />
+	<result column="FILE_PROFILE_NAME" property="fileProfileName" />
+	<result column="ARTIST_LEVEL_STATUS" property="artistLevelStatus" />
+	
+    <result column="USER_LEVEL" property="userLevel"/>
+    <result column="USER_NAME" property="userName"/>
+    <result column="USER_EMAIL" property="userEmail"/>
+    <result column="USER_TEL" property="userTel"/>
+    <result column="STATUS" property="status"/>
+</resultMap>
+
+<resultMap id="ArtprofileResultMap" type="com.icia.web.model.ArtProfile">
+	<result column="USER_ID" property="userId" />
+	<result column="FILE_SIZE" property="fileSize" />
+	<result column="FILE_EXT" property="fileExt" />
+	<result column="FILE_DATE" property="fileDate" />
+	<result column="FILE_PROFILE_NAME" property="fileProfileName" />
+</resultMap>
+
+<!-- 게시물 등록 -->
+<insert id="artistUpdate" parameterType="com.icia.web.model.Artist">
+	INSERT INTO TBL_ARTIST (
+	    USER_ID,
+	    USER_CATEGOLY,
+	    USER_INTRODUCE,
+	    ARTIST_LEVEL_STATUS
+	) VALUES (
+	    #{userId},
+	    #{userCategoly},
+	    #{userIntroduce},
+	    'N'
+	)
+</insert>
+
+<!-- 프로필 사진 등록 -->
+<insert id="artistproFileInsert" parameterType="com.icia.web.model.ArtProfile">	
+	INSERT INTO TBL_ARTIST_PROFILE (
+	    USER_ID,
+	    FILE_SIZE,
+	    FILE_EXT,
+	    FILE_DATE,
+	    FILE_PROFILE_NAME
+	) VALUES (
+	    #{userId},
+	    #{fileSize},
+	    #{fileExt},
+	    SYSDATE,
+	    #{fileProfileName}
+	)
+</insert>
+
+<!--아티스트 정보 찾기 -->
+<select id="artistSelect" parameterType="String" resultMap="ArtisResultMap">	  
+	SELECT A.USER_ID,
+	       NVL(A.USER_CATEGOLY, '') AS USER_CATEGOLY,
+	       NVL(A.USER_INTRODUCE, '') AS USER_INTRODUCE,
+	       NVL(B.FILE_PROFILE_NAME, '') AS FILE_PROFILE_NAME
+	  FROM TBL_ARTIST A, TBL_ARTIST_PROFILE B
+	 WHERE A.USER_ID = B.USER_ID
+	   AND A.USER_ID = #{value}
+</select> 
+
+
+<select id="searchArtist" parameterType="String" resultMap="ArtisResultMap">	  
+    SELECT A.USER_ID,
+           NVL(A.USER_CATEGOLY, '') AS USER_CATEGOLY,
+           NVL(A.USER_INTRODUCE, '') AS USER_INTRODUCE,
+           NVL(B.FILE_PROFILE_NAME, '') AS FILE_PROFILE_NAME
+      FROM TBL_ARTIST A, TBL_ARTIST_PROFILE B
+     WHERE A.USER_ID = B.USER_ID
+       AND A.USER_ID LIKE '%' || #{value} || '%'
+</select>
+
+
+<!--아티스트 정보 전부 가지고 오기-->
+ <select id="allArtistSelect" parameterType="String" resultMap="ArtisResultMap">
+SELECT USER_ID, USER_CATEGOLY, USER_INTRODUCE, FILE_PROFILE_NAME
+FROM (
+  SELECT A.USER_ID,
+         NVL(A.USER_CATEGOLY, '') AS USER_CATEGOLY,
+         NVL(A.USER_INTRODUCE, '') AS USER_INTRODUCE,
+         NVL(B.FILE_PROFILE_NAME, '') AS FILE_PROFILE_NAME,
+         ROW_NUMBER() OVER (ORDER BY DBMS_RANDOM.VALUE) AS RN
+    FROM TBL_ARTIST A, TBL_ARTIST_PROFILE B
+   WHERE A.USER_ID = B.USER_ID AND
+    NOT EXISTS (
+        SELECT 1
+        FROM TBL_FOLLOW_LIST
+        WHERE FOLLOWING_ID = #{value} AND A.USER_ID = FOLLOWER_ID))
+WHERE RN <![CDATA[<=]]> 8
+</select>
+
+
+<select id="mainArtistSelect" resultMap="ArtisResultMap">
+SELECT USER_ID, USER_CATEGOLY, USER_INTRODUCE, FILE_PROFILE_NAME
+FROM (
+  SELECT A.USER_ID,
+         NVL(A.USER_CATEGOLY, '') AS USER_CATEGOLY,
+         NVL(A.USER_INTRODUCE, '') AS USER_INTRODUCE,
+         NVL(B.FILE_PROFILE_NAME, '') AS FILE_PROFILE_NAME,
+         ROW_NUMBER() OVER (ORDER BY DBMS_RANDOM.VALUE) AS RN
+    FROM TBL_ARTIST A, TBL_ARTIST_PROFILE B
+   WHERE A.USER_ID = B.USER_ID)
+WHERE RN <![CDATA[<=]]> 3
+</select>
+
+
+
+
+<!-- 아티스트 총 게시물 수 -->
+<select id="artistListCount"  resultType="long">
+	SELECT COUNT(USER_ID) AS CNT
+	  FROM TBL_ARTIST
+</select>
+
+
+
+<!-- 프로필 사진 찾기 -->
+<select id="getProfile" parameterType="string" resultMap="ArtprofileResultMap">
+SELECT USER_ID,
+       NVL(FILE_SIZE, 0) AS FILE_SIZE,
+       NVL(FILE_EXT, '') AS FILE_EXT,
+       NVL(TO_CHAR(FILE_DATE, 'YYYY.MM.DD HH24:MI:SS'), '') AS FILE_DATE,
+       NVL(FILE_PROFILE_NAME, '') AS FILE_PROFILE_NAME
+  FROM TBL_ARTIST_PROFILE
+ WHERE USER_ID = #{value}
+</select>
+
+<!-- 박재윤 23.03.23 manage 페이지  아티스트등급 승인 리스트 -->
+<select id="artistLevelUpList" resultMap="ArtisResultMap">
+
+	SELECT A.USER_ID,
+	       NVL(A.USER_LEVEL, 0) AS USER_LEVEL,
+	       NVL(A.USER_NAME, '') AS USER_NAME,
+	       NVL(A.USER_EMAIL, '') AS USER_EMAIL,
+	       NVL(A.USER_TEL, '') AS USER_TEL,
+	       NVL(A.STATUS, '') AS STATUS
+	  FROM TBL_USER A, TBL_ARTIST B
+	 WHERE A.USER_ID = B.USER_ID
+	   AND B.ARTIST_LEVEL_STATUS = 'N'
+
+</select>
+
+<!-- 박재윤 23.03.23 manage 페이지  아티스트등급 승인 업데이트 -->
+<update id="userLevelStatus" parameterType="String">
+
+	 UPDATE TBL_ARTIST
+	   SET ARTIST_LEVEL_STATUS = 'Y'
+	 WHERE USER_ID = #{value}
+
+</update>
+
+</mapper>

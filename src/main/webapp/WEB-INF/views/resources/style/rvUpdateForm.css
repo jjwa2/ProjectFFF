@@ -1,0 +1,120 @@
+@font-face {
+  /* 애플산돌고딕 폰트 적용 */
+  font-family: "PretendardVariable";
+  src: url("/resources/font/PretendardVariable.ttf");
+  font-weight: normal;
+}
+
+
+html body{
+    background-color: #191919;
+    color: #fff;
+}
+
+
+
+.main-container {
+	padding-top:50px;
+    width: 100vw;
+    height: 100vh;
+    background-image:url('/resources/images/bg1.png');
+    background-size:cover;
+}
+
+.main-form {
+	margin: 0 auto;
+	padding-top: 30px;
+    width: 65%;
+    color: #191919;    
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background-color:#fff;
+	border-radius:30px;
+}
+
+.textarea {
+	text-align: center;
+    color: #191919;
+}
+
+.btn-form {
+    width: 85%;
+    text-align: center;
+    padding-bottom: 30px;
+    text-align: right;
+    font-family: "PretendardVariable";
+}
+
+.note-editor {
+  background-color: white !important;
+  color: black !important;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.note-editor .note-editable {
+  background-color: white !important;
+  color: black !important;
+  text-align: start;
+}
+
+
+.main-form h2{
+   text-align: left;
+}
+
+.input-form{
+   text-align: center;
+   font-family: "PretendardVariable";
+}
+
+.btn-upload {
+	color:black;
+  width: 150px;
+  height: 30px;
+  background: #f1a712;
+  border-radius: 5px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "PretendardVariable";
+  font-size: 10px;
+}
+
+.btn-upload:hover {
+    background: rgb(77,77,77);
+    color: #fff;
+  }
+
+#rvFile {
+  display: none;
+}
+
+input:focus {
+  border-bottom: 1px solid #191919 !important;
+  -webkit-box-shadow: 0 1px 0 0 #191919 !important;
+  -moz-box-shadow: 0 1px 0 0 #191919 !important;
+  box-shadow: 0 1px 0 0 #191919 !important;
+}
+
+[type="radio"]:checked + span:after,
+ 
+[type="radio"].with-gap:checked + span:after {
+ 
+  background-color: #191919 !important;
+ 
+}
+
+[type="radio"]:checked + span:after,
+ 
+[type="radio"].with-gap:checked + span:before,
+ 
+[type="radio"].with-gap:checked + span:after {
+ 
+  border: 2px solid  #191919 !important;
+ 
+}
+   

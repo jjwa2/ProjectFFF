@@ -1,0 +1,45 @@
+
+
+@keyframes cdp-in {
+    from {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.cdp {
+    position: relative;
+    text-align: center;
+    padding: 20px 0;
+    font-size: 0;
+    animation: cdp-in 500ms ease both;
+    animation-timeout: 200ms;
+}
+
+.cdp_i {
+    font-size: 14px;
+    text-decoration: none;
+    transition: background 250ms;
+    display: inline-block;
+    margin: 0 3px 6px;
+    height: 42px;
+    min-width: 41px;
+    border-radius: 41px;
+    border: 2px solid #fff;
+    line-height: 38px;
+    padding: 0;
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+}
+
+
+.cdp_i:hover {
+    background-color: #f1a712;
+    color: #fff;
+}

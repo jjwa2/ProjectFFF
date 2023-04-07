@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icia.web.dao.SnsDao">
+
+<!-- 게시물 resultMap -->
+<resultMap id="SnsBoardResultMap" type="com.icia.web.model.SnsBoard">
+	<id column="SNS_SEQ" property="snsSeq" />
+	<result column="USER_ID" property="userId" />
+	<result column="SNS_CONTENT" property="snsContent" />
+	<result column="SNS_CATEGORY" property="snsCategory" />
+	<result column="SNS_DATE" property="snsDate" />
+	<result column="SNS_FILE_ORG_NAME" property="snsFileOrgName" />
+	<result column="SNS_FILE_NAME" property="snsFileName" />
+	<result column="SNS_FILE_EXT" property="snsFileExt" />
+	<result column="SNS_FILE_SIZE" property="snsFileSize" />
+	<result column="USER_CATEGOLY" property="userCategoly" />
+	<result column="USER_INTRODUCE" property="userIntroduce" />
+	<result column="FILE_PROFILE_NAME" property="fileProfileName" />
+
+</resultMap>
+
+
+<resultMap id="ArtprofileResultMap" type="com.icia.web.model.ArtProfile">
+	<result column="USER_ID" property="userId" />
+	<result column="FILE_SIZE" property="fileSize" />
+	<result column="FILE_EXT" property="fileExt" />
+	<result column="FILE_DATE" property="fileDate" />
+	<result column="FILE_PROFILE_NAME" property="fileProfileName" />
+</resultMap>
+
+<resultMap id="snsReplyResultMap" type="com.icia.web.model.SnsReply">
+	<id column="SNS_REPLY_SEQ" property="snsReplySeq" />
+	<result column="SNS_SEQ" property="snsSeq" />
+	<result column="SNS_REPLY_CONTENT" property="snsReplyContent" />
+	<result column="USER_ID" property="userId" />
+</resultMap>
+
+
+
+<!-- 게시물 등록 -->
+<insert id="snsBoardInsert" parameterType="com.icia.web.model.SnsBoard">
+<!-- 선행처리기(시퀀스 생성) -->
+<selectKey resultType="long" keyProperty="snsSeq" order="BEFORE">
+	SELECT SEQ_SNS_SEQ.NEXTVAL FROM DUAL
+</selectKey>
+	INSERT INTO TBL_SNS_BOARD (
+		SNS_SEQ,
+		USER_ID,
+		SNS_CONTENT,
+		SNS_CATEGORY,
+		SNS_DATE,
+		SNS_FILE_ORG_NAME,
+		SNS_FILE_NAME,
+		SNS_FILE_EXT,
+		SNS_FILE_SIZE
+	) VALUES (
+	    #{snsSeq},
+	    #{userId},
+	    #{snsContent},  
+	    #{snsCategory},
+	    SYSDATE,
+	   	#{snsFileOrgName},
+	    #{snsFileName},
+	    #{snsFileExt},
+	    #{snsFileSize}
+	)
+</insert>
+
+
+<!-- 회원 아이디 별 총 게시물 수 -->
+<select id="snsListCount" parameterType="string" resultType="long">
+	SELECT COUNT(SNS_SEQ) AS CNT
+	  FROM TBL_SNS_BOARD
+	 WHERE USER_ID = #{value}
+</select>
+
+
+
+<!-- 특정아이디로 게시물 조회 후 출력(리스트용) -->
+<select id="snsBoardList" parameterType="string" resultMap="SnsBoardResultMap">
+	SELECT SNS_SEQ,
+	       USER_ID,
+	       SNS_CONTENT,
+	       SNS_CATEGORY,
+           SNS_DATE,
+           SNS_FILE_ORG_NAME,
+           SNS_FILE_NAME,
+           SNS_FILE_EXT,
+           SNS_FILE_SIZE,
+           USER_CATEGOLY,
+           USER_INTRODUCE,
+           FILE_PROFILE_NAME
+	  FROM (SELECT ROWNUM AS RNUM,
+	               SNS_SEQ,
+	               USER_ID,
+	               SNS_CONTENT,
+	               SNS_CATEGORY,
+	               SNS_DATE,
+	               SNS_FILE_ORG_NAME,
+	               SNS_FILE_NAME,
+	               SNS_FILE_EXT,
+	               SNS_FILE_SIZE,
+                   USER_CATEGOLY,
+                   USER_INTRODUCE,
+                   FILE_PROFILE_NAME
+	          FROM (SELECT A.SNS_SEQ,
+	                       A.USER_ID,
+	                       NVL(A.SNS_CONTENT, '') AS SNS_CONTENT,
+	                       NVL(A.SNS_CATEGORY, '') AS SNS_CATEGORY,
+                           NVL(TO_CHAR(A.SNS_DATE, 'YYYY.MM.DD HH24:MI:SS'), '') AS SNS_DATE,
+	                       NVL(A.SNS_FILE_ORG_NAME, 0) AS SNS_FILE_ORG_NAME,
+	                       NVL(A.SNS_FILE_NAME, 0) AS SNS_FILE_NAME,
+	                       NVL(A.SNS_FILE_EXT, 0) AS SNS_FILE_EXT,
+	                       NVL(A.SNS_FILE_SIZE, '') AS SNS_FILE_SIZE,
+                           NVL(B.USER_CATEGOLY, '') AS USER_CATEGOLY,
+                           NVL(B.USER_INTRODUCE, '') AS USER_INTRODUCE,
+                           NVL(C.FILE_PROFILE_NAME, '') AS FILE_PROFILE_NAME
+	                  FROM TBL_SNS_BOARD A, TBL_ARTIST B, TBL_ARTIST_PROFILE C
+	                 WHERE A.USER_ID = B.USER_ID
+                       AND B.USER_ID = C.USER_ID
+                       AND A.USER_ID = #{userId}
+                  ORDER BY A.SNS_SEQ DESC))
+</select>
+
+
+<!-- 아이디로 게시물 조회 -->
+<select id="snsSelect" parameterType="long" resultMap="SnsBoardResultMap">	  
+	SELECT SNS_SEQ,
+		   USER_ID,
+	       NVL(SNS_CONTENT, '') AS SNS_CONTENT,
+	       NVL(SNS_CATEGORY, '') AS SNS_CATEGORY,
+	       NVL(SNS_FILE_ORG_NAME, '') AS SNS_FILE_ORG_NAME,
+           NVL(SNS_FILE_NAME, '') AS SNS_FILE_NAME,
+           NVL(SNS_FILE_EXT, '') AS SNS_FILE_EXT,
+           NVL(SNS_FILE_SIZE, '') AS SNS_FILE_SIZE,
+	       NVL(TO_CHAR(SNS_DATE, 'YYYY.MM.DD HH24:MI:SS'), '') AS SNS_DATE
+	  FROM TBL_SNS_BOARD
+	 WHERE SNS_SEQ = #{value} 
+</select>   
+
+<delete id="snsDelete" parameterType="long">
+	DELETE FROM TBL_SNS_BOARD
+	WHERE
+	        SNS_SEQ = #{value}
+</delete>
+
+
+
+<!-- 댓글 작성 -->
+<insert  id="snsReplyInsert" parameterType="com.icia.web.model.SnsReply">
+<selectKey resultType="long" keyProperty="snsReplySeq" order="BEFORE">
+	SELECT SEQ_SNS_REPLY_SEQ.NEXTVAL FROM DUAL
+</selectKey>
+INSERT INTO TBL_SNS_BOARD_REPLY (
+    SNS_REPLY_SEQ,
+    SNS_SEQ,
+    SNS_REPLY_CONTENT,
+    USER_ID
+) VALUES (
+    #{snsReplySeq},
+    #{snsSeq},
+    #{snsReplyContent},
+    #{userId}
+)
+</insert>
+
+<!-- 댓글 조회 -->
+<select id="snsreplyList" parameterType="long" resultMap="snsReplyResultMap">
+	SELECT SNS_REPLY_SEQ,
+	       SNS_SEQ,
+	       NVL(SNS_REPLY_CONTENT, '') AS SNS_REPLY_CONTENT,
+	       NVL(USER_ID, '') AS USER_ID
+	  FROM TBL_SNS_BOARD_REPLY
+	 WHERE SNS_SEQ = #{snsSeq}
+     ORDER BY SNS_REPLY_SEQ ASC
+</select>
+
+
+<select id="replySelect" parameterType="long" resultMap="snsReplyResultMap">
+	SELECT SNS_SEQ,
+	SNS_REPLY_SEQ,
+	USER_ID,
+	NVL(SNS_REPLY_CONTENT, '') AS SNS_REPLY_CONTENT
+	FROM TBL_SNS_BOARD_REPLY
+	WHERE SNS_REPLY_SEQ = #{value}	
+
+</select>
+
+<delete id="replyDelete" parameterType="long">
+
+	DELETE FROM TBL_SNS_BOARD_REPLY
+	 WHERE SNS_REPLY_SEQ = #{value}
+
+</delete>
+
+
+
+
+</mapper>

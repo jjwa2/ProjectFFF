@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper  namespace="com.icia.web.dao.ReviewDao">
+
+<resultMap id="reviewResultMap" type="com.icia.web.model.Review">
+	<id column="RV_SEQ" property="rvSeq" />
+	<result column="USER_ID" property="userId" />
+	<result column="RV_TITLE" property="rvTitle" />
+	<result column="RV_CONTENT" property="rvContent" />
+	<result column="REG_DATE" property="regDate" />
+	<result column="READ_CNT" property="readCnt" />
+	<result column="LIKE_CNT" property="likeCnt" />
+	<result column="RV_FILE_SEQ" property="rvFileSeq" />
+	<result column="RV_FILE_ORG_NAME" property="rvFileOrgName" />
+	<result column="RV_FILE_NAME" property="rvFileName" />
+	<result column="RV_FILE_EXT" property="rvFileExt" />
+	<result column="RV_FILE_SIZE" property="rvFileSize" />
+	<result column="RV_REPLY_COUNT" property="rvReplyCount" />
+</resultMap>
+
+<resultMap id="reviewReplyResultMap" type="com.icia.web.model.ReviewReply">
+	<id column="RV_REPLY_SEQ" property="rvReplySeq" />
+	<result column="RV_SEQ" property="rvSeq" />
+	<result column="RV_REPLY_CONTENT" property="rvReplyContent" />
+	<result column="REG_DATE" property="regDate" />
+	<result column="USER_ID" property="userId" />
+</resultMap>
+
+<!-- 게시물 등록 -->
+<insert id="rvBoardInsert" parameterType="com.icia.web.model.Review">
+<!-- 선행처리기(시퀀스 생성) -->
+<selectKey resultType="long" keyProperty="rvSeq" order="BEFORE">
+	SELECT SEQ_RV_SEQ.NEXTVAL FROM DUAL
+</selectKey>
+	INSERT INTO TBL_RV_BOARD (
+	    RV_SEQ,
+	    USER_ID,
+	    RV_TITLE,
+	    RV_CONTENT,
+	    REG_DATE,
+	    READ_CNT,
+	    LIKE_CNT,
+	    RV_FILE_SEQ,
+	    RV_FILE_ORG_NAME,
+	    RV_FILE_NAME,
+	    RV_FILE_EXT,
+	    RV_FILE_SIZE
+	) VALUES (
+	    #{rvSeq},
+	    #{userId},
+	    #{rvTitle},
+	    #{rvContent},
+	    SYSDATE,
+	    #{readCnt},
+	    #{likeCnt},
+	    (SELECT NVL(MAX(RV_SEQ), 0) + 1 FROM TBL_RV_BOARD),
+	    #{rvFileOrgName},
+	    #{rvFileName},
+	    #{rvFileExt},
+	    #{rvFileSize}
+	)
+
+</insert>
+
+<select id="boardListCount" parameterType="com.icia.web.model.Review" resultType="long">
+
+	SELECT COUNT(RV_SEQ) AS CNT
+	  FROM TBL_RV_BOARD
+	 
+ <if test='searchType != null and searchType != "" and searchValue != null and searchValue != ""'>
+ 	<choose>
+	   	<when test='searchType == "1"'>
+	   		AND USER_ID LIKE '%' || #{searchValue} || '%'
+	   	</when>
+	   	<when test='searchType == "2"'>
+	   		AND RV_TITLE LIKE '%' || #{searchValue} || '%'
+	   	</when>
+	   	<when test='searchType == "3"'>
+	   		AND DBMS_LOB.INSTR(RV_CONTENT, #{searchValue}) > 0
+	   	</when>
+   </choose>
+</if>
+
+</select>
+
+<!-- 게시물리스트 -->
+<select id="boardList" parameterType="com.icia.web.model.Review" resultMap="reviewResultMap">
+
+	SELECT RV_SEQ,
+	       USER_ID,
+	       RV_TITLE,
+	       RV_CONTENT,
+	       REG_DATE,
+	       READ_CNT,
+	       LIKE_CNT,
+	       RV_FILE_SEQ,
+	       RV_FILE_ORG_NAME,
+	       RV_FILE_NAME,
+	       RV_FILE_EXT,
+	       RV_FILE_SIZE,
+	       RV_REPLY_COUNT
+	  FROM (SELECT ROWNUM AS RNUM,
+	               RV_SEQ,
+	               USER_ID,
+	               RV_TITLE,
+	               RV_CONTENT,
+	               REG_DATE,
+	               READ_CNT,
+	               LIKE_CNT,
+	               RV_FILE_SEQ,
+	               RV_FILE_ORG_NAME,
+	               RV_FILE_NAME,
+	               RV_FILE_EXT,
+	               RV_FILE_SIZE,
+	               RV_REPLY_COUNT
+	          FROM (SELECT A.RV_SEQ,
+	                       A.USER_ID,
+	                       NVL(A.RV_TITLE, '') AS RV_TITLE,
+	                       NVL(A.RV_CONTENT, '') AS RV_CONTENT,
+	                       NVL(TO_CHAR(A.REG_DATE,'YYYY.MM.DD'),'') AS REG_DATE,
+	                       NVL(A.READ_CNT, 0) AS READ_CNT,
+	                       NVL(A.LIKE_CNT, 0) AS LIKE_CNT,
+	                       A.RV_FILE_SEQ,
+	                       NVL(A.RV_FILE_ORG_NAME, '') AS RV_FILE_ORG_NAME,
+	                       NVL(A.RV_FILE_NAME, '') AS RV_FILE_NAME,
+	                       NVL(A.RV_FILE_EXT, '') AS RV_FILE_EXT,
+	                       NVL(A.RV_FILE_SIZE, 0) AS RV_FILE_SIZE,
+	                       NVL(B.RV_REPLY_COUNT, 0) AS RV_REPLY_COUNT
+	                  FROM TBL_RV_BOARD A, (SELECT DISTINCT TBL_RV_BOARD.RV_SEQ, 
+                                                           TBL_RV_BOARD.USER_ID,
+                                                           COUNT(TBL_RV_BOARD_REPLY.RV_REPLY_SEQ) AS RV_REPLY_COUNT
+                                                      FROM TBL_RV_BOARD
+                                                      LEFT OUTER JOIN TBL_RV_BOARD_REPLY ON TBL_RV_BOARD.RV_SEQ = TBL_RV_BOARD_REPLY.RV_SEQ group by TBL_RV_BOARD.RV_SEQ, TBL_RV_BOARD.USER_ID
+                                                    ) B
+ 
+	                 WHERE A.RV_SEQ = B.RV_SEQ
+	                 
+           <if test='searchType != null and searchType != "" and searchValue != null and searchValue != "" '>
+           		<choose>
+        			<when test='searchType == "1"'>      
+	                   AND B.USER_ID LIKE '%'|| #{searchValue} ||'%'
+	                </when>   
+	                <when test='searchType == "2"'>   
+	                   AND A.RV_TITLE LIKE '%'|| #{searchValue} ||'%'
+	                </when>   
+	                <when test='searchType == "3"'>   
+	                   AND DBMS_LOB.INSTR(A.RV_CONTENT, #{searchValue}) > 0
+	                </when>
+	               </choose>
+	              </if>    
+	                   
+	                 ORDER BY A.RV_SEQ DESC))
+	 WHERE RNUM <![CDATA[>=]]> #{startRow}
+	   AND RNUM <![CDATA[<=]]> #{endRow}
+
+</select>
+
+<select  id="boardSelect" parameterType="long" resultMap="reviewResultMap">
+
+	SELECT RV_SEQ,
+	       USER_ID,
+	       NVL(RV_TITLE, '') AS RV_TITLE,
+	       NVL(RV_CONTENT, '') AS RV_CONTENT,
+	       NVL(RV_CONTENT, '') AS RV_CONTENT,
+	       NVL(TO_CHAR(REG_DATE, 'YYYY.MM.DD HH24:MI:SS'), '') AS REG_DATE,
+	       NVL(READ_CNT, 0) AS READ_CNT,
+	       NVL(LIKE_CNT, 0) AS LIKE_CNT,
+	       RV_FILE_SEQ,
+	       NVL(RV_FILE_ORG_NAME, '') AS RV_FILE_ORG_NAME,
+	       NVL(RV_FILE_NAME, '') AS RV_FILE_NAME,
+	       NVL(RV_FILE_EXT, '') AS RV_FILE_EXT,
+	       NVL(RV_FILE_SIZE, 0) AS RV_FILE_SIZE
+	  FROM TBL_RV_BOARD
+	 WHERE RV_SEQ = #{value}	
+
+</select>
+
+<update id="boardReadCntPlus" parameterType="long">
+
+	 UPDATE TBL_RV_BOARD
+	    SET READ_CNT = READ_CNT + 1
+	  WHERE RV_SEQ = #{value}
+
+</update>
+
+
+<delete id="boardDelete" parameterType="long">
+
+	DELETE FROM TBL_RV_BOARD
+	 WHERE RV_SEQ = #{value}
+
+</delete>
+
+<update id="boardUpdate" parameterType="com.icia.web.model.Review">
+	
+	UPDATE TBL_RV_BOARD
+	   SET RV_TITLE = #{rvTitle},
+	       RV_CONTENT = #{rvContent},
+	       RV_FILE_ORG_NAME = #{rvFileOrgName},
+	       RV_FILE_NAME = #{rvFileName},
+	       RV_FILE_EXT = #{rvFileExt},
+	       RV_FILE_SIZE = #{rvFileSize}
+	 WHERE RV_SEQ = #{rvSeq}
+	
+</update>
+
+<select  id="boardFileSelect" parameterType="long" resultMap="reviewResultMap">
+
+SELECT RV_SEQ,
+       RV_FILE_SEQ,
+       NVL(RV_FILE_ORG_NAME, '') AS RV_FILE_ORG_NAME,
+       NVL(RV_FILE_NAME, '') AS RV_FILE_NAME,
+       NVL(RV_FILE_EXT, '') AS RV_FILE_EXT,
+       NVL(RV_FILE_SIZE, 0) AS RV_FILE_SIZE
+  FROM TBL_RV_BOARD
+ WHERE RV_SEQ = #{value}
+
+</select>
+
+<delete id="boardFileDelete" parameterType="long">
+
+	DELETE FROM TBL_RV_BOARD
+	 WHERE RV_FILE_SEQ = #{value}
+
+</delete>
+
+
+<insert  id="rvReplyInsert" parameterType="com.icia.web.model.ReviewReply">
+<selectKey resultType="long" keyProperty="rvReplySeq" order="BEFORE">
+	SELECT RV_REPLY_SEQ.NEXTVAL FROM DUAL
+</selectKey>
+
+INSERT INTO TBL_RV_BOARD_REPLY (
+    RV_REPLY_SEQ,
+    RV_SEQ,
+    RV_REPLY_CONTENT,
+    REG_DATE,
+    USER_ID
+) VALUES (
+    #{rvReplySeq},
+    #{rvSeq},
+    #{rvReplyContent},
+    SYSDATE,
+    #{userId}
+)
+
+</insert>
+
+<!-- 댓글 목록 조회 -->
+<select id="replyList" parameterType="com.icia.web.model.ReviewReply" resultMap="reviewReplyResultMap">
+
+	SELECT RV_REPLY_SEQ,
+	       RV_SEQ,
+	       NVL(RV_REPLY_CONTENT, '') AS RV_REPLY_CONTENT,
+	       NVL(TO_CHAR(REG_DATE, 'YYYY.MM.DD HH24:MI'), '') AS REG_DATE,
+	       NVL(USER_ID, '') AS USER_ID
+	  FROM TBL_RV_BOARD_REPLY
+	 WHERE RV_SEQ = #{rvSeq}
+
+</select>
+
+<select id="replySelect" parameterType="long"
+	resultMap="reviewReplyResultMap">
+
+	SELECT RV_REPLY_SEQ,
+	RV_SEQ,
+	NVL(RV_REPLY_CONTENT, '') AS RV_REPLY_CONTENT,
+	NVL(TO_CHAR(REG_DATE, 'YYYY.MM.DD HH24:MI'), '') AS REG_DATE,
+	NVL(USER_ID, '') AS USER_ID
+	FROM TBL_RV_BOARD_REPLY
+	WHERE RV_REPLY_SEQ = #{value}	
+
+</select>
+
+<delete id="replyDelete" parameterType="long">
+
+	DELETE FROM TBL_RV_BOARD_REPLY
+	 WHERE RV_REPLY_SEQ = #{value}
+
+</delete>
+
+<!-- 인기글 조회 -->
+<select id="bestList" parameterType="com.icia.web.model.Review" resultMap="reviewResultMap">
+
+	SELECT RV_SEQ,
+		   USER_ID,
+	       NVL(RV_TITLE, '') AS RV_TITLE
+	  FROM TBL_RV_BOARD
+	 ORDER BY READ_CNT DESC
+
+</select>
+
+<!-- 종현이 추가 -->
+<select id="boardList1" parameterType="com.icia.web.model.Review" resultMap="reviewResultMap">
+	
+	SELECT RV_SEQ,
+	       USER_ID,
+	       RV_TITLE,
+	       REG_DATE,
+	       READ_CNT
+	  FROM (SELECT ROWNUM AS RNUM,
+	               RV_SEQ,
+	               USER_ID,
+	               RV_TITLE,
+	               REG_DATE,
+	               READ_CNT
+	        FROM (SELECT RV_SEQ,
+	                     USER_ID,
+ 					 NVL(RV_TITLE, '') AS RV_TITLE,
+                     NVL(TO_CHAR(REG_DATE, 'YYYY.MM.DD HH24:MI:SS'), '') AS REG_DATE,
+                     NVL(READ_CNT, 0) AS READ_CNT
+	                FROM TBL_RV_BOARD
+	               WHERE USER_ID = #{userId}
+	               ORDER BY RV_SEQ DESC))
+</select>
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+

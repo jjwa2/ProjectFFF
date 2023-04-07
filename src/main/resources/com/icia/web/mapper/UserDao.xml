@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icia.web.dao.UserDao">
+ 
+  <resultMap type="com.icia.web.model.User" id="userResultMap">
+  <id column="USER_ID" property="userId"/>
+  <result column="USER_PWD" property="userPwd"/>
+  <result column="USER_LEVEL" property="userLevel"/>
+  <result column="USER_NAME" property="userName"/>
+  <result column="USER_EMAIL" property="userEmail"/>
+  <result column="USER_ADD" property="userAdd"/>
+  <result column="USER_ADD2" property="userAdd2"/>
+  <result column="USER_TEL" property="userTel"/>
+  <result column="STATUS" property="status"/>
+  <result column="USER_BIRTH" property="userBirth"/>
+  <result column="USER_DATE" property="userDate"/>
+
+  </resultMap>
+  
+  <!-- value 는 parametertype 값으로 받아오는 데이터를 쓴다 -->
+  
+  <select id="userSelect" parameterType="String" resultMap="userResultMap">	  
+	SELECT
+	        USER_ID,
+	        NVL(USER_PWD, '') AS USER_PWD,
+	        NVL(USER_LEVEL, 0) AS USER_LEVEL,
+	        NVL(USER_NAME, '') AS USER_NAME,
+	        NVL(USER_EMAIL, '') AS USER_EMAIL,
+	        NVL(USER_ADD, '') AS USER_ADD,
+	        NVL(USER_ADD2, '') AS USER_ADD2,
+	        NVL(USER_TEL, '') AS USER_TEL,
+	        NVL(TO_CHAR(USER_DATE, 'YYYY.MM.DD HH24:MI:SS'), '') AS USER_DATE,
+	        NVL(USER_BIRTH, '') AS USER_BIRTH,
+	        NVL(STATUS, 'N') AS STATUS
+	FROM
+	        TBL_USER
+   	WHERE	
+   			USER_ID = #{value}
+  </select>   
+  
+  
+  
+  
+  
+  <insert id="userInsert" parameterType="com.icia.web.model.User">
+  	INSERT INTO TBL_USER (
+						    USER_ID,
+						    USER_PWD,
+						    USER_LEVEL,
+						    USER_NAME,
+						    USER_EMAIL,
+						    USER_ADD,
+						    USER_ADD2,
+						    USER_TEL,
+						    USER_DATE,
+						    USER_BIRTH,
+						    STATUS
+) 
+					VALUES  (
+							 #{userId},
+							 #{userPwd},
+							 #{userLevel},
+							 #{userName},
+							 #{userEmail},
+							 #{userAdd},
+							 #{userAdd2},
+							 #{userTel},
+							 SYSDATE,
+							 #{userBirth},
+							 #{status}
+							 )
+  
+  </insert>
+  
+    <update id="userUpdate" parameterType ="com.icia.web.model.User">
+	  UPDATE TBL_USER
+	     SET USER_PWD = #{userPwd},
+	         USER_NAME = #{userName},
+	         USER_EMAIL = #{userEmail}
+	   WHERE USER_ID = #{userId}
+  </update>
+  
+  
+   <select id="userSelect2" parameterType="String" resultMap="userResultMap">	  
+	SELECT
+	        USER_ID,
+	        NVL(USER_PWD, '') AS USER_PWD,
+	        NVL(USER_LEVEL, 0) AS USER_LEVEL,
+	        NVL(USER_NAME, '') AS USER_NAME,
+	        NVL(USER_EMAIL, '') AS USER_EMAIL,
+	        NVL(USER_ADD, '') AS USER_ADD,
+	        NVL(USER_ADD2, '') AS USER_ADD2,
+	        NVL(USER_TEL, '') AS USER_TEL,
+	        NVL(TO_CHAR(USER_DATE, 'YYYY.MM.DD HH24:MI:SS'), '') AS USER_DATE,
+	        NVL(USER_BIRTH, '') AS USER_BIRTH,
+	        NVL(STATUS, 'N') AS STATUS
+	FROM
+	        TBL_USER
+   	WHERE	
+   			USER_EMAIL = #{value}	
+  </select>   
+  
+  <update id="userUpdate1" parameterType ="com.icia.web.model.User">
+		UPDATE TBL_USER
+		   SET STATUS = #{status}
+		 WHERE USER_ID = #{userId}
+  </update>
+  
+  
+  <select id="userSelect3" parameterType="String" resultMap="userResultMap">	  
+	SELECT
+	        USER_ID,
+	        NVL(USER_PWD, '') AS USER_PWD,
+	        NVL(USER_LEVEL, 0) AS USER_LEVEL,
+	        NVL(USER_NAME, '') AS USER_NAME,
+	        NVL(USER_EMAIL, '') AS USER_EMAIL,
+	        NVL(USER_ADD, '') AS USER_ADD,
+	        NVL(USER_ADD2, '') AS USER_ADD2,
+	        NVL(USER_TEL, '') AS USER_TEL,
+	        NVL(TO_CHAR(USER_DATE, 'YYYY.MM.DD HH24:MI:SS'), '') AS USER_DATE,
+	        NVL(USER_BIRTH, '') AS USER_BIRTH,
+	        NVL(STATUS, 'N') AS STATUS
+	FROM
+	        TBL_USER
+   	WHERE	
+   			USER_TEL = #{userTel}	
+  </select>   
+  
+  
+  <!-- manege 유저레벨 승인 (박재윤 23.03.23) -->  
+<update id="userLevel" parameterType="String">
+  
+	UPDATE TBL_USER
+	   SET USER_LEVEL = '2'
+	 WHERE USER_ID = #{value}
+  
+</update>
+ 
+
+<select id="adminUserList" parameterType="int" resultMap="userResultMap">	  
+	SELECT USER_LEVEL,
+		   USER_ID,
+	       USER_NAME,
+	       USER_EMAIL,
+	       STATUS,
+	       USER_DATE
+		  FROM (SELECT ROWNUM AS RNUM,
+		  			   USER_LEVEL,
+		               USER_ID,
+		               USER_NAME,
+		               USER_EMAIL,
+		               STATUS,
+		               USER_DATE
+		          FROM (SELECT USER_LEVEL,
+		          			   USER_ID,
+		                       NVL(USER_NAME, '') AS USER_NAME,
+		                       NVL(USER_EMAIL, '') AS USER_EMAIL,
+		                       NVL(TO_CHAR(USER_DATE, 'YYYY.MM.DD HH24:MI:SS'),'') AS USER_DATE,
+		                       NVL(STATUS, '') AS STATUS
+		                  FROM TBL_USER
+		                 WHERE USER_LEVEL = #{value}
+	                  ORDER BY USER_LEVEL DESC))
+</select>     
+  
+  
+</mapper>
+
+
+
+
+
+
+
+
+
+
+

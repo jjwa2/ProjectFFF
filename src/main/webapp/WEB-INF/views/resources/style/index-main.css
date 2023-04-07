@@ -1,0 +1,314 @@
+@font-face {
+  /* 애플산돌고딕 폰트 적용 */
+  font-family: "PretendardVariable";
+  src: url("/resources/font/PretendardVariable.ttf");
+  font-weight: normal;
+}
+
+div
+{
+  box-sizing: border-box;
+}
+body
+{
+  margin: 0px;
+}
+
+.main-background
+{
+  width: 100vw;
+  height: 70vh;
+  background-color: #191919;
+}
+.main-item-image
+{
+   width:100%;
+   height:100%;
+   object-fit: cover;
+   z-index: -100;
+   opacity: 0;
+   transition: opacity 0.4s ease-in-out;
+}
+.main-item-image.active {
+  opacity: 1;
+}
+
+.main-image
+{
+  width: 80vw;
+  display: flex;
+  padding-top: 200px;
+  flex-direction : column;
+  margin: auto;
+  
+  position: relative;
+  z-index: 1;
+}
+
+.main-item
+{
+  width: 100%;
+  height: 20%;
+  text-align: center;
+  z-index: 100;
+}
+.main-item3
+{
+	  color: rgb(255, 255, 255);
+	  position: relative;
+      right: -300px;
+      bottom:2000px;
+}
+
+.main-title
+{
+  font-family: 'Tourney', cursive;
+  color: rgb(255, 255, 255);
+  font-weight: 100;
+  font-size: 100px;
+  position: relative;
+  bottom:2000px;
+}
+.main-fundinglist
+{
+  margin-top:160px;
+  width: 100vw;
+  height: auto;
+  font-family: "PretendardVariable";
+}
+.main-artistlist
+{
+  width: 100vw;
+  height: 100vh;
+  font-family: "PretendardVariable";
+  background-color:black; 
+}
+
+.main-fundinglist-banner-container
+{
+  text-align:center;
+  margin: auto;
+  position: relative;
+  bottom:70px;
+}
+.main-fundinglist-banner
+{
+	border-radius: 10px;
+		box-shadow:
+  2.8px 2.8px 2.2px rgba(0, 0, 0, 0.02),
+  6.7px 6.7px 5.3px rgba(0, 0, 0, 0.028),
+  12.5px 12.5px 10px rgba(0, 0, 0, 0.035),
+  22.3px 22.3px 17.9px rgba(0, 0, 0, 0.042),
+  41.8px 41.8px 33.4px rgba(0, 0, 0, 0.05),
+  100px 100px 80px rgba(0, 0, 0, 0.07)
+;
+}
+.main-fundinglist-title
+{
+	text-align: center;
+}
+.main-fundinglist-subtitle
+{
+	text-align: center;
+	margin-top: 50px;
+}
+.main-artistlist-title
+{
+	text-align: center;
+	padding-top: 80px;
+	color: white;
+}
+
+
+.main-fundinglist-recent-contain
+{
+	display: flex;
+	justify-content:center;
+	width: 60.5%;
+	height:50%;
+	margin: auto;
+}
+
+.main-fundinglist-recent
+{
+	border-radius: 10px;
+	margin-left: 50px;
+	margin-top: 60px;
+	margin: auto;
+	padding-top: 60px;
+}
+
+.main-fundinglist-recent-image
+{
+    width: 100%;
+	height:100%;
+	object-fit: cover;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+}
+.main-fundinglist-recent-imagebox
+{
+	width: 100%;
+	height: 480px;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+		box-shadow:
+  2.8px 2.8px 2.2px rgba(0, 0, 0, 0.02),
+  6.7px 6.7px 5.3px rgba(0, 0, 0, 0.028),
+  12.5px 12.5px 10px rgba(0, 0, 0, 0.035),
+  22.3px 22.3px 17.9px rgba(0, 0, 0, 0.042),
+  41.8px 41.8px 33.4px rgba(0, 0, 0, 0.05),
+  100px 100px 80px rgba(0, 0, 0, 0.07)
+;
+}
+
+
+
+.main-fundinglist-recommend-contain
+{
+	display: flex;
+	width: 62%;
+	height:50%;
+	margin: auto;
+	flex-wrap: wrap;
+	padding-bottom:70px;
+}
+
+.main-fundinglist-recommend
+{
+	border-radius: 10px;
+    margin:auto;
+    padding-left:10px;
+	margin-top: 60px;
+	justify-content:space-between;
+	width: 30%;
+}
+
+.main-fundinglist-recommend-image
+{
+    width: 100%;
+	height:100%;
+	object-fit: cover;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+}
+.main-fundinglist-recommend-imagebox
+{
+    width: 100%;
+	height: 300px;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	box-shadow:
+  2.8px 2.8px 2.2px rgba(0, 0, 0, 0.02),
+  6.7px 6.7px 5.3px rgba(0, 0, 0, 0.028),
+  12.5px 12.5px 10px rgba(0, 0, 0, 0.035),
+  22.3px 22.3px 17.9px rgba(0, 0, 0, 0.042),
+  41.8px 41.8px 33.4px rgba(0, 0, 0, 0.05),
+  100px 100px 80px rgba(0, 0, 0, 0.07)
+;
+}
+
+
+
+
+
+
+.main-artistlist-main-recommend-contain
+{
+	display: flex;
+	width: 62%;
+	height:50%;
+	margin: auto;
+	flex-wrap: wrap;
+	padding-bottom:70px;
+}
+
+.main-artistlist-main-recommend
+{
+	border-radius: 10px;
+    margin:auto;
+	margin-top: 60px;
+	justify-content:space-between;
+	width: 30%;
+	color: white;
+	text-align: center;
+}
+
+.main-artistlist-main-recommend-image
+{
+    width: 280px;
+    height: 280px; 
+	object-fit: cover;
+	border-radius: 70%;
+}
+
+.main-artistlist-main-recommend-content
+{
+	padding-top: 20px;
+}
+.main-artistlist-main-recommend-imagebox
+{
+	width: 280px;
+    height: 280px; 
+	object-fit: cover;
+	border-radius: 70%;
+	margin: auto;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.nav-menu:hover{
+  color: gold;
+}
+
+
+
+    .main-fundinglist-recommend-imagebox {
+        overflow: hidden;
+    }
+    
+    .main-fundinglist-recommend-imagebox img {
+        transition: all 0.3s ease-out; /* 확대/축소 효과의 지속 시간과 속도 */
+    }
+    
+    .main-fundinglist-recommend-imagebox:hover img {
+        transform: scale(1.2); /* 마우스를 올렸을 때 이미지를 1.2배 크게 확대 */
+    }
+
+    .main-fundinglist-recent-imagebox {
+        overflow: hidden;
+    }
+    
+    .main-fundinglist-recent-imagebox img {
+        transition: all 0.3s ease-out; /* 확대/축소 효과의 지속 시간과 속도 */
+    }
+    
+    .main-fundinglist-recent-imagebox:hover img {
+        transform: scale(1.2); /* 마우스를 올렸을 때 이미지를 1.2배 크게 확대 */
+    }
+    
+    .main-artistlist-main-recommend-imagebox {
+        overflow: hidden;
+    }
+    
+    .main-artistlist-main-recommend-imagebox img {
+        transition: all 0.3s ease-out; /* 확대/축소 효과의 지속 시간과 속도 */
+    }
+    
+    .main-artistlist-main-recommend-imagebox:hover img {
+        transform: scale(1.2); /* 마우스를 올렸을 때 이미지를 1.2배 크게 확대 */
+    }
+

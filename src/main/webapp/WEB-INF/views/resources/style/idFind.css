@@ -1,0 +1,81 @@
+@font-face {
+  /* 애플산돌고딕 폰트 적용 */
+  font-family: "PretendardVariable";
+  src: url("/resources/font/PretendardVariable.ttf");
+  font-weight: normal;
+}
+
+body{
+	background-image : url('/resources/images/login/consert2.jpg');
+	background-repeat :no-repeat;
+  background-size:cover;
+    font-family: "PretendardVariable";
+}
+.fontfont
+{
+	    font-family: "PretendardVariable";
+	    font-weight: 800;
+	    font-size: 45px;
+}
+.findidBtn
+{
+	width: 240px;
+}
+
+
+.form-horizontal{
+	margin-top:200px;
+	margin-bottom:200px;
+	margin-left:400px;
+	margin-right:400px;
+	background-color:#fff;
+	height:65vh;
+	padding-top:50px;
+	border-radius:30px;
+}
+.form-group{
+	margin-left:80px;
+	margin-right:140px;
+}
+.col-form-label{
+	text-align: center;
+	margin-top:17px;
+}
+
+
+.form-control{
+	margin-left:600px;
+	width:100px;
+}
+
+.userTel{
+	margin-right:10px;
+}
+.userTel2{
+	margin-right:10px;
+}
+
+
+.col-8{
+	margin-top:10px;	
+	width:500px;
+}
+
+
+.findid{
+	width:300px;
+	text-align:center;
+	margin-left:35%;
+	margin-top:70px;
+}
+
+.btn{
+	background-color : #fff;
+	color:black;
+}
+
+
+
+
+
+

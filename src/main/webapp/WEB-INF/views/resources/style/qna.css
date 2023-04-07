@@ -1,0 +1,34 @@
+div
+{
+  box-sizing: border-box;
+}
+body
+{
+  margin: 0px;
+}
+
+.main-background
+{
+  width: 100vw;
+  height:100vh;
+  background-color: #191919;
+  background-image: url('/resources/images/bg-img/bg-3.jpg');
+  background-size: cover;
+}
+
+ .collapsible-body{
+   background-color: whitesmoke;
+ }
+ .main-container{
+   padding: 80px 150px;
+ }
+
+ .headertitle{
+   color: white;
+   text-align: center;
+   font-size: 50px;
+   font-family: 'Anton', sans-serif;
+ }
+ .headertitle > span{
+   font-size: 100px;
+ }

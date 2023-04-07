@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper  namespace="com.icia.web.dao.NtBoardDao">
+
+<resultMap id="ntResultMap" type="com.icia.web.model.NtBoard">
+	<id column="NT_BBS_SEQ" property="ntBbsSeq" />
+	<result column="USER_ID" property="userId" />
+	<result column="USER_LEVEL" property="userLevel" />
+	<result column="NT_BBS_TITLE" property="ntBbsTitle" />
+	<result column="NT_BBS_CONTENT" property="ntBbsContent" />
+	<result column="NT_REG_DATE" property="ntRegDate" />
+	<result column="NT_FILE_SEQ" property="ntFileSeq" />
+	<result column="NT_FILE_ORG_NAME" property="ntFileOrgName" />
+	<result column="NT_FILE_NAME" property="ntFileName" />
+	<result column="NT_FILE_EXT" property="ntFileExt" />
+	<result column="NT_FILE_SIZE" property="ntFileSize" />
+</resultMap>	
+
+
+<select id="boardListCount" parameterType="com.icia.web.model.NtBoard" resultType="long">
+
+	SELECT COUNT(A.NT_BBS_SEQ) AS CNT
+	  FROM TBL_NT_BOARD A, TBL_USER B
+	 WHERE A.USER_ID = B.USER_ID
+	 
+</select>
+
+
+<select id="boardList" parameterType="com.icia.web.model.NtBoard" resultMap="ntResultMap">
+
+	SELECT NT_BBS_SEQ,
+	       USER_ID,
+	       USER_LEVEL,
+	       NT_BBS_TITLE,
+	       NT_BBS_CONTENT,
+	       NT_REG_DATE,
+	       NT_FILE_SEQ,
+	       NT_FILE_ORG_NAME,
+	       NT_FILE_NAME,
+	       NT_FILE_EXT,
+	       NT_FILE_SIZE
+	  FROM (SELECT ROWNUM AS RNUM,
+	               NT_BBS_SEQ,
+	               USER_ID,
+	               USER_LEVEL,
+	               NT_BBS_TITLE,
+	               NT_BBS_CONTENT,
+	               NT_REG_DATE,
+	               NT_FILE_SEQ,
+	               NT_FILE_ORG_NAME,
+	               NT_FILE_NAME,
+	               NT_FILE_EXT,
+	               NT_FILE_SIZE
+	          FROM (SELECT A.NT_BBS_SEQ,
+	                       A.USER_ID,
+	                       B.USER_LEVEL,
+	                       NVL(A.NT_BBS_TITLE, '') AS NT_BBS_TITLE,
+	                       NVL(A.NT_BBS_CONTENT, '') AS NT_BBS_CONTENT,
+	                       NVL(TO_CHAR(A.NT_REG_DATE,'YYYY.MM.DD'),'') AS NT_REG_DATE,       
+	                       A.NT_FILE_SEQ,
+	                       NVL(A.NT_FILE_ORG_NAME, '') AS NT_FILE_ORG_NAME,
+	                       NVL(A.NT_FILE_NAME, '') AS NT_FILE_NAME,
+	                       NVL(A.NT_FILE_EXT, '') AS NT_FILE_EXT,
+	                       NVL(A.NT_FILE_SIZE, 0) AS NT_FILE_SIZE
+	                  FROM TBL_NT_BOARD A, TBL_USER B
+	                 WHERE A.USER_ID = B.USER_ID
+	                 ORDER BY A.NT_BBS_SEQ DESC))
+	 WHERE RNUM <![CDATA[>=]]> #{startRow}
+	   AND RNUM <![CDATA[<=]]> #{endRow}
+
+</select>
+
+
+<select  id="boardSelect" parameterType="long" resultMap="ntResultMap">
+
+	SELECT NT_BBS_SEQ,
+	       USER_ID,
+	       NVL(NT_BBS_TITLE, '') AS NT_BBS_TITLE,
+	       NVL(NT_BBS_CONTENT, '') AS NT_BBS_CONTENT,
+	       NVL(TO_CHAR(NT_REG_DATE, 'YYYY.MM.DD HH24:MI:SS'), '') AS NT_REG_DATE,
+	       NT_FILE_SEQ,
+	       NVL(NT_FILE_ORG_NAME, '') AS NT_FILE_ORG_NAME,
+	       NVL(NT_FILE_NAME, '') AS NT_FILE_NAME,
+	       NVL(NT_FILE_EXT, '') AS NT_FILE_EXT,
+	       NVL(NT_FILE_SIZE, 0) AS NT_FILE_SIZE
+	  FROM TBL_NT_BOARD
+	 WHERE NT_BBS_SEQ = #{value}
+	
+
+</select>
+
+<insert id="boardInsert" parameterType="com.icia.web.model.NtBoard">
+<!-- 선행처리기(시퀀스 생성) -->
+<selectKey resultType="long" keyProperty="ntBbsSeq" order="BEFORE">
+	SELECT SEQ_NT_BBS_SEQ.NEXTVAL FROM DUAL
+</selectKey>
+
+	INSERT INTO TBL_NT_BOARD (
+	    NT_BBS_SEQ,
+	    USER_ID,
+	    NT_BBS_TITLE,
+	    NT_BBS_CONTENT,
+	    NT_REG_DATE,
+	    NT_FILE_SEQ,
+	    NT_FILE_ORG_NAME,
+	    NT_FILE_NAME,
+	    NT_FILE_EXT,
+	    NT_FILE_SIZE
+	) VALUES (
+	    #{ntBbsSeq},
+	    #{userId},
+	  	#{ntBbsTitle},
+	    #{ntBbsContent},
+	   	SYSDATE,
+	    (SELECT NVL(MAX(NT_BBS_SEQ), 0) + 1 FROM TBL_NT_BOARD),
+	    #{ntFileOrgName},
+	    #{ntFileName},
+	    #{ntFileExt},
+	    #{ntFileSize}
+	)
+
+</insert>
+
+<update id="boardUpdate" parameterType="com.icia.web.model.NtBoard">
+
+	UPDATE TBL_NT_BOARD
+	   SET NT_BBS_TITLE = #{ntBbsTitle},
+	       NT_BBS_CONTENT = #{ntBbsContent},
+	       NT_FILE_ORG_NAME = #{ntFileOrgName},
+	       NT_FILE_NAME = #{ntFileName},
+	       NT_FILE_EXT = #{ntFileExt},
+	       NT_FILE_SIZE = #{ntFileSize}
+	 WHERE NT_BBS_SEQ = #{ntBbsSeq}
+
+</update>
+
+<select  id="boardFileSelect" parameterType="long" resultMap="ntResultMap">
+
+	SELECT NT_BBS_SEQ,
+	       NT_FILE_SEQ,
+	       NVL(NT_FILE_ORG_NAME, '') AS NT_FILE_ORG_NAME,
+	       NVL(NT_FILE_NAME, '') AS NT_FILE_NAME,
+	       NVL(NT_FILE_EXT, '') AS NT_FILE_EXT,
+	       NVL(NT_FILE_SIZE, 0) AS NT_FILE_SIZE
+	  FROM TBL_NT_BOARD
+	 WHERE NT_BBS_SEQ = #{value}
+
+</select>
+
+
+<!-- 게시물 삭제 -->
+<delete id="boardDelete" parameterType="long">
+	DELETE FROM TBL_NT_BOARD
+  	WHERE NT_BBS_SEQ = #{value}
+</delete>
+
+
+</mapper>

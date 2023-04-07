@@ -1,0 +1,419 @@
+@font-face {
+  /* 애플산돌고딕 폰트 적용 */
+  font-family: "PretendardVariable";
+  src: url("/resources/font/PretendardVariable.ttf");
+  font-weight: normal;
+}
+
+div
+{
+  box-sizing: border-box;
+  font-family: "PretendardVariable";
+}
+
+.hide {
+  display: none;
+}
+
+.slide {
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+}
+
+@keyframes slidein {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes slideout {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+
+/* .main-background
+{
+  width: 100vw;
+  height: 120vh;
+  background-color: #191919;
+} */
+
+
+.main-container
+{
+  width: 100vw;
+  height: 100vh;
+  background-color: #191919;
+}
+
+
+/* 전체 페이지 스타일링 */
+body {
+  font-family: "PretendardVariable";
+  font-size: 16px;
+  line-height: 1.5;
+  background-color: #191919;
+  margin: 0;
+}
+
+  /* 사용자 정보 스타일링 */
+
+  .main-container h1{
+    color: #f1a712;
+    margin: 30px;
+  }
+
+  .user-info {
+    display: flex;
+    justify-content:center;
+    margin-top: 30px;
+    color: #fff;
+    margin: 30px;
+  }
+  
+  .user-info img {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    margin-right: 30px;
+  }
+  
+  .user-details {
+    flex: 1;
+  }
+  
+  .user-details h2 {
+    font-size: 28px;
+    margin: 0 0 10px;
+    color: #fff;
+  }
+  
+  .user-details p {
+    font-size: 18px;
+    margin: 0;
+  }
+  
+  /* 탭 스타일링 */
+  .tabs {
+    margin-top: 50px;
+    background-color: #191919;
+    width: 80%;
+    margin: auto;
+    font-size: 22px;
+  }
+  .content-susu
+  {
+  	margin: auto;
+  	width: 80%
+  }
+  
+  
+  .tabs ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 2px solid #ccc;
+  }
+  
+  .tabs li {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .tabs li a {
+    display: block;
+    text-decoration: none;
+    color: #999;
+    padding: 15px 0;
+    transition: color 0.3s ease, border-bottom-color 0.3s ease;
+  }
+  
+  .tabs li a:hover {
+    color: #333;
+  }
+  
+  .tabs li.active a {
+    color: #333;
+    border-bottom-color: #333;
+  }
+
+
+  /* 콘텐츠 스타일링 */
+  .content {
+    margin-top: 0px;
+    margin: 0 auto;
+    padding: 20px;
+    
+    background-color: #121212;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    color: #fff;
+    width: 70%;
+	position: relative;
+	bottom:-20px;
+	border-radius: 10px;
+	text-align: center;
+  }
+  
+  .content-title
+  {
+  	margin-bottom: 20px;
+  }
+  
+  .content p {
+    font-size: 18px;
+    line-height: 1.5;
+  }
+  
+  table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 5px;
+  }
+
+  .textForm {
+    border-bottom: 2px solid #adadad;
+    margin: 30px;
+    padding: 10px 10px;
+  }
+
+  .birth{
+    width: 80px;
+  }
+  
+  .birth-title{
+    display: inline-block;
+    color: #636e72;
+    padding-right: 110px;
+  }
+  
+  .birth-content{
+    display: inline-block;
+  }
+
+  .scrollable-container{
+    height: 250px; /* 스크롤 영역의 높이를 설정합니다 */
+    overflow-y: scroll; /* 세로축 방향으로 스크롤 가능하도록 설정합니다 */
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+
+  label {
+    margin-bottom: 10px;
+  }
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    padding: 5px;
+    margin-bottom: 10px;
+    width: 300px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+  }
+  button {
+    padding: 5px 10px;
+    background-color: #f1a712;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+
+  h2{
+    color: #f1a712;
+  }
+
+  /*등급*/
+  
+.show
+{
+  display: block;
+}
+.black-bg {
+  width : 100%;
+  height : 100%;
+  position : fixed;
+  background : rgba(0,0,0,0.5);
+  z-index : 100;
+  padding: 30px;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 1s;
+}
+.white-bg {
+  background: white;
+  border-radius: 5px;
+  padding: 30px;
+  padding-top: 10px;
+  width: 50vw;
+  margin: auto;
+  margin-top: 5%;
+} 
+.show-modal
+{
+  visibility: visible;
+  opacity: 1;
+}
+
+
+.upgrade-title
+{
+  width: 100%;
+  height: 10%;
+  text-align: center;
+  font-size: 200%;
+  margin-bottom: 10px;
+  margin-top: 30px;
+}
+.upgrade-main
+{
+  width: 100%;
+  height: 50%;
+  display: flex;
+  margin-bottom: 10px;
+}
+.upgrade-info
+{
+  width: 70%;
+  height: 100%;
+  margin-left: 20%;
+}
+.upgrade-profile
+{
+  width: 30%;
+  height: 100%;
+}
+.upgrade-profile-preview
+{
+  margin-top: 20%;
+  position: relative;
+  right: 70%;
+  text-align: justify;
+  line-height: 200px;
+  
+  background-size: cover;
+  background-position: center;
+  height: 200px;
+}
+.file-preview {
+  max-width: 100%;
+  max-height: 200px;
+}
+.upgrade-profile-upload
+{
+  position: relative;
+  top:18px;
+  right: 70%;
+  width: 250px;
+}
+.upgrade-sub
+{
+  width: 100%;
+  height: 30%;
+  margin-bottom: 10px;
+}
+.upgrade-button
+{
+  width: 100%;
+  height: 10%;
+  text-align: end;
+  padding-right: 8%;
+}
+.upgrade-info-item1
+{
+  position: relative;
+  top:13px;
+  
+}
+.upgrade-info-item3 {
+  width: 250px;
+  height: 40px;
+}
+.upgrade-sub
+{
+  width: 83%;
+  margin-top: 40px;
+  position: relative;
+  left: 90px;
+}
+
+.fundingmain-hr
+{
+  width: 75%;
+  margin: auto;
+}
+.snstitle
+{
+  width: 70%;
+  margin: auto;
+  color: #fff;
+  text-align: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+.snstitlemain
+{
+  font-size: 350%;
+  font-family: 'Do Hyeon', sans-serif;
+}
+hr {
+  background-color: #fff;
+  padding: 0;
+  margin: 80px;
+}
+
+hr.hr-1 {
+  border: 0;
+  height: 1px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+}
+
+/* 회원 탈퇴 */
+
+.out {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.out-div {
+  display: flex;
+  flex-direction: column;
+}
+
+.out-label {
+	display: flex;
+	text-align: left;
+}
+
+/*회원 정보 수정*/
+
+.susu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.susu-div {
+  display: flex;
+  flex-direction: column;
+}
+
+.susu-label {
+	display: flex;
+	text-align: left;
+}

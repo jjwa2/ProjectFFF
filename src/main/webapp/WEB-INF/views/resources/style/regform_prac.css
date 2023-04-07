@@ -1,0 +1,130 @@
+@font-face {
+  /* 애플산돌고딕 폰트 적용 */
+  font-family: "PretendardVariable";
+  src: url("/resources/font/PretendardVariable.ttf");
+  font-weight: normal;
+}
+
+div
+{
+  box-sizing: border-box;
+}
+body
+{
+  margin: 0px;
+}
+
+.main-background
+{
+  width: 1900px;
+  height: 1400px;
+  background-image : url('/resources/images/login/login-background.jpg');
+  background-repeat :no-repeat;
+  background-size:cover; 
+}
+
+body {
+  background-image: #34495e;
+  background-color: #212121;
+}
+
+.jointitle
+{
+  font-family: 'Do Hyeon', sans-serif;
+  font-size: 30px;
+  padding-top: 20px;
+}
+
+
+.joinForm{
+  margin-top: 50px;
+  margin-bottom: 30px;
+  position: absolute;
+  width: 700px;
+  height: 1100px;
+  padding: 30px, 20px;
+  background-color: #FFFFFF;
+  text-align: center;
+  top: 88%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 15px;
+
+}
+
+h2 {
+  text-align: center;
+  margin: 30px;
+}
+
+.btn1 {
+	
+  position: relative;
+  right: 25%;
+  margin-bottom: 40px;
+  width: 40%;
+  height: 40px;
+  background-size: 200%;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: 0.4s;
+  display: inline;
+  margin-left:50%;
+  border-radius: 15px;
+  background-color: #fff;
+  border:1px solid #f1a712;
+  color:black;
+ font-size:1.4em;
+   font-family: "PretendardVariable";
+   box-shadow: 1px 1px 3px 1px gray;
+}
+
+.waves-effect{
+	border-radius:30px;
+}
+
+
+.autocomplete{
+  display: inline-block;
+}
+
+
+
+.btnChk{
+  border-radius: 15px;
+}
+
+
+.btn:hover{
+	 background-color: #FFAB00 !important;
+}
+
+.w-btn-yellow-outline:hover {
+    background-color: #f1a712;
+    color: black;
+}
+
+.w-btn:hover {
+    letter-spacing: 2px;
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.w-btn-outline:hover {
+    letter-spacing: 2px;
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.w-btn:active {
+    transform: scale(1.5);
+}
+
+.w-btn-outline:active {
+    transform: scale(1.5);
+}
+
+
+
+}

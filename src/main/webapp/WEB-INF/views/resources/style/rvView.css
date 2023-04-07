@@ -1,0 +1,147 @@
+html body {
+    background-color: #191919;
+    color: #fff;
+}
+
+div {
+    box-sizing: border-box;
+}
+
+
+.main-background {
+    width: 100vw;
+    height: 100vh;
+    background-color: #191919;
+}
+
+
+.main-container {
+    width: 100vw;
+    height: 100vh;
+    background-color: #191919;
+}
+
+
+
+
+
+
+
+.view {
+    height: auto;
+    padding-left: 30px;
+    padding-right: 50px; 
+    padding-top:30px;
+    
+}
+
+.view-main {
+    width: 100%;
+    height: 70%;
+}
+
+.view-info {
+    display: flex;
+    justify-content: flex-start;
+    height: 5%;
+
+}
+
+.view-main-info {
+    width: 100%;
+    height: 100%;
+
+}
+
+.view-title {
+    width: 100%;
+    height: 15%;
+}
+
+.view-info-detail {
+    width: 25%;
+    display: flex;
+    justify-content:space-around;
+}
+.view-writer {
+    height: 100%;
+}
+.view-regdat {
+    height: 100%;
+}
+
+.view-readcnt {
+    height: 100%;
+}
+
+.view-content {
+    width: 100%;
+    height: 70%;
+}
+
+.writebtn {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    justify-content: space-between;
+    justify-content: flex-end;
+}
+
+
+
+.reply-main {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 30%;
+    margin: 10px;
+    padding: 10px;
+}
+
+.reply-main-view {
+    width: 100%;
+    height: 80%;
+    display: flex;
+}
+
+.reply-writeform {
+    width: 100%;
+    height: 20%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+
+.reply-writer {
+	text-align:center;
+    width: 10%;
+    height: 40%;
+}
+
+.reply-content {
+    width: 75%;
+    height: 40%;
+}
+
+.reply-regdate {
+	text-align:center;
+    width: 10%;
+    height: 40%;
+}
+
+.reply-delete {
+	text-align:center;
+	all: unset;
+}
+
+.rvReplyContent {
+	color:#fff;
+	width:90%;
+	height:70px;
+	vertical-align: middle !important;
+}
+
+#reply-btn {
+	margin-left: 15px;
+}

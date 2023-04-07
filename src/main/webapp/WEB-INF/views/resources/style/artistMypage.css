@@ -1,0 +1,532 @@
+@font-face {
+  /* 애플산돌고딕 폰트 적용 */
+  font-family: "PretendardVariable";
+  src: url("/resources/font/PretendardVariable.ttf");
+  font-weight: normal;
+}
+
+div
+{
+  box-sizing: border-box;
+}
+body
+{
+  margin: 0px;
+}
+
+.main-background
+{
+  width: 100vw;
+  height: 140vh;
+  background-color: #191919;
+}
+
+.sub-title
+{
+  width: 100%;
+  height: 10%;
+  color: white;
+}
+
+.main-title
+{
+  width: 100%;
+  height: 10%;
+  color: white;
+}
+
+.artist-container
+{
+  display: flex;
+  width: 100vw;
+  height: 70vh;
+  justify-content : center;
+  position: relative;
+}
+
+.artist-item
+{
+  width : 30%;
+  height : 50%;
+  background : #222222;
+  margin : 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items : center;
+  border-radius: 30px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.item-main, .item-title
+{
+  color: white;
+}
+
+.item-logo
+{
+  color: #fec827;
+  position: relative;
+  bottom: 50px;
+  text-align: center;
+  
+}
+
+.item-main
+{
+  position: relative;
+  bottom: -50px;
+  font-family: "PretendardVariable";
+  font-size: 20px;
+  text-align: center;
+}
+
+.item-title
+{
+  font-size: 50px;
+  font-family: 'Bebas Neue', cursive;
+  text-align: center;
+}
+
+.main-title, .sub-title
+{
+  text-align: center;
+}
+
+.title-container
+{
+  display: flex;
+  width: 100vw;
+  height: 30vh;
+  flex-direction : column;
+  justify-content : center;
+  position: relative;
+}
+
+.main-title
+{
+  font-family: 'Bebas Neue', cursive;
+  font-size: 80px;
+  position: relative;
+  bottom: 10px;
+}
+
+.sub-title
+{
+  font-family: 'Do Hyeon', sans-serif;
+  font-size: 30px;
+  color: #fec827;
+  position: relative;
+  bottom: 10px;
+}
+
+.hover01 figure{
+  -webkit-transform: scale(1);
+  transform: scale(1);
+  -webkit-transition: .3s ease-in-out;
+  transition: .3s ease-in-out;
+}
+.hover01 figure:hover{
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+}
+
+
+
+
+
+.show
+{
+  display: block;
+}
+.black-bg {
+  width : 100%;
+  height : 100%;
+  position : fixed;
+  background : rgba(0,0,0,0.5);
+  z-index : 100;
+  padding: 30px;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 1s;
+}
+.white-bg {
+  background: white;
+  border-radius: 5px;
+  padding: 30px;
+  padding-top: 10px;
+  width: 30vw;
+  margin: auto;
+  margin-top: 5%;
+} 
+.show-modal
+{
+  visibility: visible;
+  opacity: 1;
+}
+
+
+.upgrade-title
+{
+  width: 100%;
+  height: 10%;
+  text-align: center;
+  font-size: 200%;
+  margin-bottom: 10px;
+  margin-top: 30px;
+}
+.upgrade-main
+{
+  width: 100%;
+  height: 50%;
+  display: flex;
+  margin-bottom: 10px;
+}
+.upgrade-info
+{
+  width: 70%;
+  height: 100%;
+  margin-left: 20%;
+}
+.upgrade-profile
+{
+  width: 30%;
+  height: 100%;
+}
+.upgrade-profile-preview
+{
+  margin-top: 20%;
+  position: relative;
+  right: 70%;
+  text-align: justify;
+  line-height: 200px;
+  
+  background-size: cover;
+  background-position: center;
+  height: 200px;
+}
+.file-preview {
+  max-width: 100%;
+  max-height: 200px;
+}
+.upgrade-profile-upload
+{
+  position: relative;
+  top:18px;
+  right: 70%;
+  width: 250px;
+}
+.upgrade-sub
+{
+  width: 100%;
+  height: 30%;
+  margin-bottom: 10px;
+}
+.upgrade-button
+{
+  width: 100%;
+  height: 10%;
+  text-align: end;
+  padding-right: 8%;
+}
+.upgrade-info-item1
+{
+  position: relative;
+  top:13px;
+  
+}
+.upgrade-info-item3 {
+  width: 250px;
+  height: 40px;
+}
+.upgrade-sub
+{
+  margin-top: 40px;
+  position: relative;
+  left: 90px;
+}
+
+
+
+.show
+{
+  display: block;
+}
+.black-bg {
+  width : 100%;
+  height : 100%;
+  position : fixed;
+  background : rgba(0,0,0,0.5);
+  z-index : 100;
+  padding: 30px;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 1s;
+}
+.white-bg {
+  background: white;
+  border-radius: 5px;
+  padding: 30px;
+  width:38%;
+  padding-top: 30px;
+  margin-top: 150px;
+} 
+.show-modal
+{
+  visibility: visible;
+  opacity: 1;
+}
+
+
+        .progress-bar {
+            margin-top: 20px;
+            margin-bottom: 10px;
+            width: 100%;
+            height: 5px;
+
+            background-color: #e4e4e4;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2) inset;
+        }
+
+
+
+        .progress {
+
+            height: 100%;
+            width: 20%;
+            left: 0;
+            top: 0;
+            background-color: #ff6262 !important;
+            transition: width 0.5s ease;
+            text-align: center;
+            line-height: 30px;
+            font-size: 14px;
+            color: #595959;
+            font-weight: bold;
+        }
+
+
+
+.artistDetailTitle
+{
+	text-align: center;
+	font-family: "PretendardVariable";
+	font-size: 30px;
+	font-weight: 800;
+	margin-bottom: 20px;
+}
+.artistDetailImage
+{
+	width: 400px;
+	height: 400px;
+	object-fit: cover;
+	margin: auto;
+	border-radius: 10px;
+}
+.artistDetailBar
+{
+	width:70%;
+	margin: auto;
+}
+.artistDetailGoal
+{
+	display: flex;
+	width:70%;
+	margin: auto;
+}
+.artistDetailGoalPercent
+{
+	color: red;
+	font-size: 40px;
+	font-family: "PretendardVariable";
+	font-weight: 800;
+	margin-left: 20px;
+	margin-top: 10px;
+}
+.artistDetailGoalPrice
+{
+	margin-top: 35px;
+	margin-left: 10px;
+}
+
+
+
+.artistDetailGoalFoot
+{
+	display: flex;
+	width: 70%;
+	margin:auto;
+	justify-content: flex-end;
+}
+.artistDetailGoalFootPeriod
+{
+    font-size: 30px;
+	font-family: "PretendardVariable";
+	font-weight: 800;
+}
+.artistDetailGoalFootTitle
+{
+	margin-top: 15px;
+	margin-right: 10px;
+	font-family: "PretendardVariable";
+}
+.artistDetailGoalButton
+{
+    width: 70%;
+	margin:auto;
+	text-align: right;
+	margin-top: 10px;
+}
+
+
+
+
+.show1
+{
+  display: block;
+}
+.black-bg1 {
+  width : 100%;
+  height : 100%;
+  position : fixed;
+  background : rgba(0,0,0,0.5);
+  z-index : 100;
+  padding: 30px;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 1s;
+}
+.white-bg1 {
+  background: white;
+  border-radius: 5px;
+  padding: 30px;
+  width:38%;
+  height:auto;
+  margin:auto;
+  padding-top: 30px;
+  padding-bottom: 20px;
+  margin-top: 150px;
+} 
+.show-modal1
+{
+  visibility: visible;
+  opacity: 1;
+}
+.fundingDoneBody
+{
+	display: flex;
+}
+.fundingDoneImage
+{
+    width: 300px;
+	height: 320px;
+	object-fit: cover;
+	border-radius: 10px;
+	margin-top: 20px;
+	margin-left: 10px;
+}
+.fundingDoneInfo
+{
+    width: 100%;
+	margin-left: 60px;
+	padding-top:40px;
+	padding-bottom:20px;
+	font-family: "PretendardVariable";
+	font-size: 22px;
+}
+.fundingDoneInfoItem
+{
+	font-size: 20px;
+}
+.fundingDoneInfoItems
+{
+	text-align: center;
+	width: 100%;
+	font-size: 18px;
+}
+.fundingDoneBar
+{
+    width:70%;
+	margin: auto;
+}
+.fundingDoneGoal 
+{
+	display: flex;	
+	width:70%;
+	margin: auto;
+	margin-top:10px; 
+	font-family: "PretendardVariable";
+}
+.fundingDoneTail
+{
+	width:70%;
+	text-align: right;
+    margin: auto;
+}
+.fundingDoneButton
+{
+	padding-top:20px;
+	width:100%;
+	text-align: right;
+	margin: auto;
+	font-family: "PretendardVariable";
+}
+.fundingDoneNotice
+{
+    font-family: "PretendardVariable";
+}
+
+
+
+
+.artistDetailOtherTitle {
+	text-align: center;
+	font-family: "PretendardVariable";
+	font-size: 30px;
+	font-weight: 800;
+	margin-bottom: 20px;
+}
+
+
+.show2
+{
+  display: block;
+}
+
+.black-bg2 {
+  width : 100%;
+  height : 100%;
+  position : fixed;
+  background : rgba(0,0,0,0.5);
+  z-index : 100;
+  padding: 30px;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 1s;
+}
+.white-bg2 {
+  background: white;
+  border-radius: 5px;
+  padding: 30px;
+  width:38%;
+  height:auto;
+  margin:auto;
+  padding-top: 30px;
+  padding-bottom: 20px;
+  margin-top: 300px;
+} 
+.show-modal2
+{
+  visibility: visible;
+  opacity: 1;
+}
+
+
+
+
+
+
+

@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icia.web.dao.QnaDao">
+
+<resultMap type="com.icia.web.model.Qna" id="QnaResultMap">
+	<id column="QNA_BBS_SEQ" property="qnaBbsSeq"/>
+	<result column="USER_ID" property="userId"/>
+	<result column="QNA_BBS_TITLE" property="qnaBbsTitle"/>
+	<result column="QNA_BBS_CONTENT" property="qnaBbsContent"/>
+	<result column="QNA_REG_DATE" property="qnaRegDate"/>
+	<result column="QNA_BBS_READ_CNT" property="qnaBbsReadCnt"/>
+	<result column="QNA_BBS_ANSWER_STATE" property="qnaBbsAnswerState"/>
+	<result column="QNA_BBS_SECRET" property="qnaBbsSecret"/>
+	<result column="QNA_BBS_INDENT" property="qnaBbsIndent"/>
+	<result column="QNA_BBS_PARENT" property="qnaBbsParent"/>
+	<result column="QNA_BBS_ORDER" property="qnaBbsOrder"/>
+	<result column="QNA_BBS_GROUP" property="qnaBbsGroup"/>
+	<result column="USER_NAME" property="userName"/>
+	
+</resultMap>
+
+<resultMap id="qnaReplyResultMap" type="com.icia.web.model.QnaReply">
+	<id column ="QNA_REPLY_SEQ" property="qnaReplySeq"/>
+	<id column ="QNA_BBS_SEQ" property="qnaBbsSeq"/>
+	<id column ="USER_ID" property="userId"/>
+	<id column ="QNA_REPLY_CONTENT" property="qnaReplyContent"/>
+	<id column ="QNA_REPLY_DATE" property="qnaReplyDate"/>
+</resultMap>
+
+
+<!-- 총 게시물 수 -->
+<select id="boardListCount" parameterType="com.icia.web.model.Qna" resultType="long">
+		SELECT 
+				COUNT(A.QNA_BBS_SEQ) AS CNT
+		  FROM 
+		  		TBL_QNA_BOARD A, TBL_USER B
+		 WHERE 
+		 		A.USER_ID = B.USER_ID
+		 
+<if test='searchType != null and searchType != "" and searchValue != null and searchValue != "" '>
+	<choose>
+	<when test='searchType =="1"'>
+	AND 
+		B.USER_NAME LIKE '%' || #{searchValue} || '%'
+	</when>
+	<when test='searchType =="2"'>
+	AND 
+		A.QNA_BBS_TITLE LIKE '%' || #{searchValue} ||'%'
+	</when>
+	<when test='searchType == "3"'>
+	AND 
+		DBMS_LOB.INSTR(A.QNA_BBS_CONTENT, #{searchValue}) > 0
+	</when>
+	</choose>
+</if>		 
+</select>
+
+
+<!-- 게시물 조회 시작 -->
+<select id="boardSelect" parameterType="long" resultMap="QnaResultMap">
+	SELECT
+            A.QNA_BBS_SEQ,
+            A.USER_ID,
+            NVL(B.USER_NAME, '') AS USER_NAME,
+            NVL(A.QNA_BBS_TITLE,'') AS QNA_BBS_TITLE,
+            NVL(A.QNA_BBS_CONTENT,'') AS QNA_BBS_CONTENT,
+            NVL(TO_CHAR(A.QNA_REG_DATE, 'YYYY.MM.DD HH24:MI'),'') AS QNA_REG_DATE,
+            NVL(A.QNA_BBS_READ_CNT, 0) AS QNA_BBS_READ_CNT,
+            NVL(A.QNA_BBS_ANSWER_STATE, '') AS QNA_BBS_ANSWER_STATE,
+            NVL(A.QNA_BBS_SECRET, '') AS QNA_BBS_SECRET,
+            NVL(A.QNA_BBS_INDENT, 0) AS QNA_BBS_INDENT,
+            NVL(A.QNA_BBS_PARENT, 0) AS QNA_BBS_PARENT,
+            NVL(A.QNA_BBS_ORDER, 0) AS QNA_BBS_ORDER,
+            NVL(A.QNA_BBS_GROUP, 0) AS QNA_BBS_GROUP
+       FROM 	TBL_QNA_BOARD A, TBL_USER B
+      WHERE 	A.QNA_BBS_SEQ = #{value}
+        AND 	A.USER_ID = B.USER_ID
+</select>
+
+
+<!-- 게시물 조회수 증가 -->
+
+<update id="boardReadCntPlus" parameterType="long">
+	UPDATE TBL_QNA_BOARD
+	   SET QNA_BBS_READ_CNT = QNA_BBS_READ_CNT + 1
+	 WHERE QNA_BBS_SEQ = #{value}
+</update>
+
+
+<!-- 게시물 리스트 xml-->
+<select id="boardList" parameterType="com.icia.web.model.Qna" resultMap="QnaResultMap">
+SELECT
+    QNA_BBS_SEQ,
+    USER_ID,
+    USER_NAME,
+    QNA_BBS_TITLE,
+    QNA_BBS_CONTENT,
+    QNA_REG_DATE,
+    QNA_BBS_READ_CNT,
+    QNA_BBS_ANSWER_STATE,
+    QNA_BBS_SECRET,
+    QNA_BBS_INDENT,
+    QNA_BBS_PARENT,
+    QNA_BBS_ORDER,
+    QNA_BBS_GROUP
+FROM( SELECT
+        ROWNUM AS RNUM,
+        QNA_BBS_SEQ,
+        USER_ID,
+        USER_NAME,
+        QNA_BBS_TITLE,
+        QNA_BBS_CONTENT,
+        QNA_REG_DATE,
+        QNA_BBS_READ_CNT,
+        QNA_BBS_ANSWER_STATE,
+        QNA_BBS_SECRET,
+        QNA_BBS_INDENT,
+        QNA_BBS_PARENT,
+        QNA_BBS_ORDER,
+        QNA_BBS_GROUP
+    FROM(SELECT
+            A.QNA_BBS_SEQ,
+            A.USER_ID,
+            NVL(B.USER_NAME, '') AS USER_NAME,
+            NVL(A.QNA_BBS_TITLE,'') AS QNA_BBS_TITLE,
+            NVL(A.QNA_BBS_CONTENT,'') AS QNA_BBS_CONTENT,
+            NVL(TO_CHAR(A.QNA_REG_DATE, 'YYYY.MM.DD HH24:MI'),'') AS QNA_REG_DATE,
+            NVL(A.QNA_BBS_READ_CNT, 0) AS QNA_BBS_READ_CNT,
+            NVL(A.QNA_BBS_ANSWER_STATE, ' ') AS QNA_BBS_ANSWER_STATE,
+            NVL(A.QNA_BBS_SECRET, ' ') AS QNA_BBS_SECRET,
+            NVL(A.QNA_BBS_INDENT, 0) AS QNA_BBS_INDENT,
+            NVL(A.QNA_BBS_PARENT, 0) AS QNA_BBS_PARENT,
+            NVL(A.QNA_BBS_ORDER, 0) AS QNA_BBS_ORDER,
+            NVL(A.QNA_BBS_GROUP, 0) AS QNA_BBS_GROUP
+            FROM TBL_QNA_BOARD A, TBL_USER B
+            WHERE A.USER_ID = B.USER_ID
+            
+            <if test='searchType != null and searchType != "" and searchValue != null and searchValue != "" '>
+        	<choose>
+        	<when test='searchType == "1"'>
+          AND B.USER_NAME LIKE '%'|| #{searchValue} ||'%'
+        </when>
+       		 <when test='searchType == "2"'>
+          AND A.QNA_BBS_TITLE LIKE '%'|| #{searchValue} ||'%'
+        </when>
+      		 <when test='searchType == "3"'>
+          AND DBMS_LOB.INSTR(A.QNA_BBS_CONTENT, #{searchValue}) > 0
+         	</when>
+         	</choose>
+         </if>
+          
+	     ORDER BY A.QNA_BBS_SEQ DESC, A.QNA_BBS_ORDER ASC))
+	WHERE RNUM <![CDATA[>=]]> #{startRow}
+	  AND RNUM <![CDATA[<=]]> #{endRow}
+</select>
+
+<insert id="boardInsert" parameterType="com.icia.web.model.Qna">
+<selectKey resultType="Long" keyProperty="qnaBbsSeq" order="BEFORE">
+	SELECT SEQ_QNA_BBS_SEQ.NEXTVAL FROM DUAL
+</selectKey>
+
+INSERT INTO TBL_QNA_BOARD (
+                 QNA_BBS_SEQ,
+                 USER_ID,
+                 QNA_BBS_TITLE,
+                 QNA_BBS_CONTENT,
+                 QNA_REG_DATE,
+                 QNA_BBS_READ_CNT,
+                 QNA_BBS_ANSWER_STATE,
+                 QNA_BBS_SECRET,
+                 QNA_BBS_INDENT,
+                 QNA_BBS_PARENT,
+                 QNA_BBS_ORDER,
+                 QNA_BBS_GROUP
+       ) VALUES (
+                   #{qnaBbsSeq},             
+                   #{userId},
+                   #{qnaBbsTitle},
+                   #{qnaBbsContent},
+                   SYSDATE,
+                   #{qnaBbsReadCnt},
+                   #{qnaBbsAnswerState},
+                   #{qnaBbsSecret},
+                   #{qnaBbsIndent},
+                   #{qnaBbsParent},
+                   #{qnaBbsOrder},
+                   #{qnaBbsGroup}
+         		  )
+
+</insert>
+
+<!-- 그룹내 순서 수정  추후 삭제-->
+<update id="boardGroupOrderUpdate" parameterType="com.icia.web.model.Qna">
+		UPDATE TBL_QNA_BOARD
+		   SET QNA_BBS_ORDER = QNA_BBS_ORDER + 1
+	     WHERE QNA_BBS_GROUP = #{qnaBbsGroup}
+		   AND QNA_BBS_ORDER <![CDATA[>=]]> #{#qnaBbsOrder}
+
+</update>
+
+<!-- 게시물 삭제 -->
+<delete id="boardDelete" parameterType="long">
+		DELETE FROM TBL_QNA_BOARD 
+		 WHERE QNA_BBS_SEQ= #{value}
+</delete>
+
+<!-- 게시물 삭제 시 답변 수 체크   추후 삭제-->
+<select id="boardAnswerCount" parameterType="long" resultType="int">
+	 SELECT COUNT(QNA_BBS_SEQ) AS CNT
+		  FROM TBL_QNA_BOARD
+		 WHERE QNA_BBS_PARENT = #{value}
+</select>
+
+<!-- 업데이트 -->
+<update id="boardUpdate" parameterType="com.icia.web.model.Qna">
+	  UPDATE TBL_QNA_BOARD
+		    SET QNA_BBS_TITLE = #{qnaBbsTitle},
+		        QNA_BBS_CONTENT = #{qnaBbsContent}
+		  WHERE QNA_BBS_SEQ = #{qnaBbsSeq}
+</update>
+
+<!-- 댓글 등록 -->
+<insert id="boardReplyInsert" parameterType="com.icia.web.model.QnaReply">
+<selectKey resultType="long" keyProperty="qnaReplySeq" order="BEFORE">
+	SELECT SEQ_QNA_REPLY_SEQ.NEXTVAL FROM DUAL
+</selectKey>
+
+INSERT INTO TBL_QNA_BOARD_REPLY (
+    QNA_BBS_SEQ,
+    QNA_REPLY_SEQ,
+    USER_ID,
+    QNA_REPLY_CONTENT,
+    QNA_REPLY_DATE
+) VALUES (
+    #{qnaBbsSeq},
+    #{qnaReplySeq},
+    #{userId},
+    #{qnaReplyContent},
+    SYSDATE
+)
+
+</insert>
+
+<!-- 댓글 목록 조회 -->
+<select id="replyList" parameterType="com.icia.web.model.QnaReply" resultMap="qnaReplyResultMap">
+	
+	SELECT
+		    QNA_BBS_SEQ,
+		    QNA_REPLY_SEQ,
+		    NVL(USER_ID, '') AS USER_ID,
+		    NVL(QNA_REPLY_CONTENT, '') AS QNA_REPLY_CONTENT,
+		    NVL(TO_CHAR(QNA_REPLY_DATE, 'YYYY.MM.DD HH24:MI'),'') AS QNA_REPLY_DATE
+	  FROM
+    		TBL_QNA_BOARD_REPLY
+    		
+      WHERE  QNA_BBS_SEQ = #{qnaBbsSeq}		
+
+</select>
+
+<select id="replySelect" parameterType="long" resultMap="qnaReplyResultMap">
+	
+	SELECT
+		    QNA_BBS_SEQ,
+		    QNA_REPLY_SEQ,
+		    NVL(USER_ID, '') AS USER_ID,
+		    NVL(QNA_REPLY_CONTENT, '') AS QNA_REPLY_CONTENT,
+		    NVL(TO_CHAR(QNA_REPLY_DATE, 'YYYY.MM.DD HH24:MI'),'') AS QNA_REPLY_DATE
+	  FROM
+    		TBL_QNA_BOARD_REPLY
+    		
+      WHERE  QNA_REPLY_SEQ = #{value}	
+
+</select>
+
+<delete id="replyDelete" parameterType="long">
+	
+	DELETE FROM TBL_QNA_BOARD_REPLY
+	WHERE QNA_REPLY_SEQ = #{value}
+</delete>
+
+<!-- 게시글 댓글 상태 -->
+<update id="replyStateUpdate"  parameterType="long">
+
+	UPDATE TBL_QNA_BOARD
+	   SET QNA_BBS_ANSWER_STATE = 'Y'
+	 WHERE QNA_BBS_SEQ = #{value}
+
+</update>
+
+
+
+</mapper>

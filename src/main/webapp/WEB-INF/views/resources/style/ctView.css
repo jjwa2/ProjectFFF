@@ -1,0 +1,316 @@
+@font-face {
+  /* 애플산돌고딕 폰트 적용 */
+  font-family: "PretendardVariable";
+  src: url("/resources/font/PretendardVariable.ttf");
+  font-weight: normal;
+}
+div {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    overflow-x: hidden;
+}
+
+.main-container {
+    width: 100vw;
+    height: auto;
+    background-color: #191919;
+}
+.btnFd
+{
+	width: 100%;
+	background-color: white;
+	color: black;
+}
+.ctViewContainer
+{
+	width: 70%;
+	height: 100%;
+	margin: auto;
+}
+.ctViewMainBadge
+{
+	text-align: center;
+	position: relative;
+	top:40px;
+}
+.ctViewMainTitle
+{
+	text-align: center;
+	padding-top: 50px;
+	font-family: "PretendardVariable";
+	font-size: 50px;
+	font-weight: 800;
+	color: white;
+}
+.ctViewMainBody
+{
+	display: flex;
+	justify-content: center;
+	margin-left: 230px;
+}
+.ctViewMainImage
+{
+    width: 400px;
+	height: 500px;
+	object-fit: cover;
+	border-radius: 10px;
+	margin-top: 20px;
+	margin-left: 10px;
+}
+.ctViewMainInfo
+{
+    width: 100%;
+	margin-left: 60px;
+	padding-top:55px;
+	padding-bottom:40px;
+	font-family: "PretendardVariable";
+	font-size: 22px;
+	color: white;
+}
+.ctViewMainInfoItem
+{
+	font-size: 20px;
+}
+.ctViewMainInfoItems
+{
+	text-align: center;
+	width: 100%;
+	font-size: 18px;
+}
+.ctViewMainInfoButton
+{
+	margin-top:40px;
+	width: 405px;
+	border-radius: 0;
+	font-family: "PretendardVariable";
+}
+.tab-content-Placeinfo-placename
+{
+	margin-bottom: 20px;
+	margin-left: 20px;
+}
+
+
+
+
+
+ul.list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px solid #ccc;
+
+}
+ul.list::after {
+  content: '';
+  display: block;
+  clear: both;
+  color: white;
+}
+.tab-button {
+  display: block;
+  padding: 10px 20px 10px 20px;
+  float: left;
+  margin-right: -1px;
+  margin-bottom: -1px;
+  color: grey;
+  text-decoration: none;
+  cursor: pointer;
+  color: white;
+  font-family: "PretendardVariable";
+  margin-right: 5px;
+}
+.firstButton
+{
+	margin-left: 222px;
+}
+.orange {
+  border-top: 2px solid orange;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid white;
+  border-left: 1px solid #ccc;
+  color: white;
+  margin-top: -2px;
+  font-family: "PretendardVariable";
+}
+.tab-content {
+  display: none;
+  padding: 10px;
+  color: white;
+  font-family: "PretendardVariable";
+}
+.show {
+  display: block;
+}
+.tab-content-advanceInfo
+{
+	width: 80%;
+	margin: auto;
+	font-family: "PretendardVariable";
+	margin-top: 40px;
+}
+
+.tab-content-MainInfo-contain
+{
+	display: flex;
+}
+
+.tab-content-MainInfo
+{
+	width: 100%;
+	margin: auto;
+	font-family: "PretendardVariable";
+	margin-top: 40px;
+	margin-left:80px; 
+}
+
+.tab-content-Placeinfo
+{
+	width: 80%;
+	margin: auto;
+	font-family: "PretendardVariable";
+	margin-top: 40px;
+}
+.tab-content-MainInfo-artistinfo
+{
+	color: white;
+	font-family: "PretendardVariable";
+}
+.tab-content-MainInfo-artistContain
+{
+	display: flex;
+}
+.tab-content-MainInfo-image
+{
+    width: 180px;
+    height: 180px; 
+	object-fit: cover;
+	border-radius: 70%;
+	margin-left:50px; 
+}
+.tab-content-MainInfo-imagebox
+{
+	margin-top:40px;
+	width: 180px;
+    height: 180px; 
+	object-fit: cover;
+	border-radius: 70%;
+	margin-left:50px; 
+}
+.tab-content-MainInfo-infobox
+{
+	font-family: "PretendardVariable";
+	color: white;
+}
+.tab-content-MainInfo-infobox-follow
+{
+	text-align: right;
+	width: 300px;
+	position: relative;
+	bottom:45px;
+}
+.tab-content-MainInfo-infobox-item
+{
+	margin-top: 105px;
+	margin-left: 70px;
+}
+.tab-content-MainInfo-ctintroduce
+{
+    margin-top:40px;
+}
+.tab-content-MainInfo-ctintroduceMain
+{
+	margin-top:40px;
+	margin-left:50px;
+	background-color: white;
+	border-radius: 10px; 
+	color:black;
+	width: 70%;
+	height: 50px;
+	line-height: 50px;
+	padding-left: 40px;
+}
+.tab-content-MainInfo-ticketTitle
+{
+	margin-top:40px;
+}
+.tab-content-MainInfo-ticketInfo
+{
+	background-color: white;
+	border-radius: 10px; 
+	color:black;
+	margin-top:40px;
+	margin-left:50px;
+	width: 70%;
+	height: 50px;
+	line-height: 50px;
+	padding-left: 40px;
+}
+.ticketInfo
+{
+	margin-left: 30px; 
+}
+.tab-content-MainInfo-bro
+{
+    margin-top:40px;
+}
+.tab-content-MainInfo-broMainImage
+{
+	width: 70%;
+	margin-left:50px;
+	margin-top:40px;
+	margin-bottom: 60px;
+}
+.tab-content-MainInfo-broMainImageFile
+{
+	width: 100%;
+	object-fit: cover;
+}
+
+
+.tab-content-MainInfo-ad
+{
+	flex-grow:1; 
+	width: 400px;
+	margin-right:70px; 
+}
+
+
+.tab-content-MainInfo-ad-title
+{
+	margin-top:40px;
+}
+.tab-content-MainInfo-adRecommand
+{
+	margin-top:30px;
+	width:100%;
+	height:300px;
+}
+.tab-content-MainInfo-adRecommandImage
+{
+	width:100%;
+	height:300px;
+	border-radius:10px;
+	object-fit: cover;
+}
+.tab-content-MainInfo-adRecommandTitle
+{
+	margin-top: 10px;
+}
+
+
+
+
+
+
+
+
+
+table
+{
+  border: 1px solid white;
+}
+

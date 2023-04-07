@@ -1,0 +1,135 @@
+div
+{
+  box-sizing: border-box;
+}
+body
+{
+  margin: 0px;
+}
+
+.main-background
+{
+  width: 100vw;
+  height: 105vh;
+  background-color: #191919;
+  background-image: url(/MAINHOME/img/bg-img/bg-3.jpg);
+  opacity: inherit;
+}
+
+#previewImage
+{
+  width: 200px;
+  height: 200px;
+  text-align: center;
+  line-height: 340px;
+}
+.uploadpreview
+{
+      width:200px;
+	  height:200PX;
+	  border: 1;
+	  line-height: 340px;
+	  margin-bottom: 20px;
+	  position: relative;
+	  right:-100px;
+	  bottom:70px;
+}
+
+
+.white-bg {
+  background: white;
+  border-radius: 5px;
+  padding: 30px;
+  padding-top: 10px;
+  width: 50vw;
+  margin: auto;
+  margin-top: 5%;
+  margin-bottom: 5%;
+} 
+
+
+.upgrade-title
+{
+  width: 100%;
+  height: 10%;
+  text-align: center;
+  font-size: 200%;
+  margin-bottom: 10px;
+  margin-top: 30px;
+}
+.upgrade-main
+{
+  width: 100%;
+  height: 50%;
+  display: flex;
+  margin-bottom: 10px;
+}
+.upgrade-info
+{
+  width: 30%;
+  height: 100%;
+  margin-left: 20%;
+}
+.upgrade-profile
+{
+  width: 30%;
+  height: 100%;
+}
+.upgrade-profile-preview
+{
+  margin-top: 20%;
+  position: relative;
+  left : 70px;
+  top : -30px;
+  text-align: justify;
+  line-height: 200px;
+  
+  background-size: cover;
+  background-position: center;
+  height: 200px;
+}
+.file-preview {
+  max-width: 100%;
+  max-height: 200px;
+}
+.upgrade-profile-upload
+{
+  position: relative;
+  left : 80px;
+  width: 250px;
+}
+.upgrade-sub
+{
+  width: 100%;
+  height: 30%;
+  margin-bottom: 10px;
+}
+.upgrade-button
+{
+  width: 100%;
+  height: 10%;
+  text-align: end;
+  padding-right: 8%;
+  color: #fff;
+}
+.upgrade-info-item1
+{
+  position: relative;
+  top:13px;
+  
+}
+.upgrade-info-item3 {
+  width: 250px;
+  height: 40px;
+}
+.upgrade-sub
+{
+  margin-top: 40px;
+  position: relative;
+  left: 90px;
+  width: 83%;
+}
+
+
+
+

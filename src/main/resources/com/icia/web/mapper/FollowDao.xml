@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icia.web.dao.FollowDao">
+
+<!-- 게시물 resultMap -->
+<resultMap id="FollowResultMap" type="com.icia.web.model.Follow">
+
+	<result column="FOLLOWER_ID" property="followerId" />
+	<result column="FOLLOWING_ID" property="followingId" />
+	
+	<result column="USER_CATEGOLY" property="userCategoly" />
+	<result column="USER_INTRODUCE" property="userIntroduce" />
+	
+	<result column="FILE_PROFILE_NAME" property="fileProfileName" />
+
+	<result column="SNS_SEQ" property="snsSeq" />
+	<result column="SNS_CONTENT" property="snsContent" />
+	<result column="SNS_FILE_NAME" property="snsFileName" />
+	
+</resultMap>
+
+<select id="followList" parameterType="string" resultMap="FollowResultMap">	  
+SELECT A.FOLLOWER_ID,
+       A.FOLLOWING_ID,
+       NVL(B.USER_CATEGOLY, '') AS USER_CATEGOLY,
+       NVL(B.USER_INTRODUCE, '') AS USER_INTRODUCE,
+       NVL(C.FILE_PROFILE_NAME, '') AS FILE_PROFILE_NAME
+  FROM TBL_FOLLOW_LIST A, TBL_ARTIST B, TBL_ARTIST_PROFILE C
+ WHERE A.FOLLOWER_ID = B.USER_ID
+   AND B.USER_ID = C.USER_ID
+   AND A.FOLLOWING_ID = #{value}
+</select> 
+
+
+<select id="followSnsList" parameterType="com.icia.web.model.Follow" resultMap="FollowResultMap">	  
+SELECT FOLLOWER_ID,
+       FOLLOWING_ID,
+       USER_CATEGOLY,
+       USER_INTRODUCE,
+       FILE_PROFILE_NAME,
+       SNS_SEQ,
+       SNS_CONTENT,
+       SNS_FILE_NAME
+FROM(  SELECT ROWNUM AS RNUM,
+              FOLLOWER_ID,
+              FOLLOWING_ID,
+              USER_CATEGOLY,
+              USER_INTRODUCE,
+              FILE_PROFILE_NAME,
+              SNS_SEQ,
+              SNS_CONTENT,
+              SNS_FILE_NAME
+FROM (SELECT A.FOLLOWER_ID,
+             A.FOLLOWING_ID,
+             NVL(B.USER_CATEGOLY, '') AS USER_CATEGOLY,
+             NVL(B.USER_INTRODUCE, '') AS USER_INTRODUCE,
+             NVL(C.FILE_PROFILE_NAME, '') AS FILE_PROFILE_NAME,
+             D.SNS_SEQ,
+             NVL(D.SNS_CONTENT, '') AS SNS_CONTENT,
+             NVL(D.SNS_FILE_NAME, '') AS SNS_FILE_NAME
+        FROM TBL_FOLLOW_LIST A, TBL_ARTIST B, TBL_ARTIST_PROFILE C, TBL_SNS_BOARD D
+       WHERE A.FOLLOWER_ID = B.USER_ID
+         AND B.USER_ID = C.USER_ID
+         AND C.USER_ID = D.USER_ID
+         AND A.FOLLOWING_ID = #{followingId}
+         <if test='followerId != null and followerId != ""'>
+         AND A.FOLLOWER_ID = #{followerId}
+         </if>
+         ORDER BY D.SNS_SEQ DESC))
+</select>
+
+
+
+
+
+
+
+<select id="followListCount" parameterType="string" resultType="long">
+SELECT COUNT(FOLLOWER_ID) AS CNT
+  FROM TBL_FOLLOW_LIST
+ WHERE FOLLOWING_ID = #{value}
+</select>
+
+<insert id="followInsert" parameterType="com.icia.web.model.Follow">
+	INSERT INTO TBL_FOLLOW_LIST 
+	(
+	  FOLLOWER_ID,
+      FOLLOWING_ID		
+	) VALUES (
+	    #{followerId},
+	    #{followingId}
+	)
+</insert>
+
+
+<delete id="followDelete" parameterType="com.icia.web.model.Follow">
+	DELETE FROM TBL_FOLLOW_LIST
+	 WHERE FOLLOWER_ID = #{followerId}
+	   AND FOLLOWING_ID = #{followingId}
+</delete>
+
+</mapper>
