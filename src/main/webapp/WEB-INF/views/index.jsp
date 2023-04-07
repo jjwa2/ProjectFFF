@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"> 
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script> 
   
-  <!-- 메인페이지 관련 CSS 링크 -->
+  <!-- 메인페이지 관련 CSS 링크1 -->
   <link rel="stylesheet" href="/resources/style/index-main.css">
   <link rel="stylesheet" href="/resources/style/login.css">
   
